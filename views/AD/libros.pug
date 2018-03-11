@@ -1,0 +1,59 @@
+extends ../layout
+
+block content
+  h1.text-center Lista de Libros
+  hr
+  .table-responsive.tamTabla
+    table.table.table-striped.table-hover
+      thead.bg-primary
+        tr
+          th(scope='col') Código
+          th(scope='col') Titulo
+          th(scope='col') Autor
+          th(scope='col') Categoria
+          th(scope='col') Idioma
+          th(scope='col') Año
+          th(colspan="2")
+            .text-center
+              a(href="/agregarLibro")
+                button.btn.btn-warning.text-white(type="submit")
+                  i.fas.fa-plus
+                  |   Agregar
+      tbody
+        each book in libros
+          tr
+            th(scope='row') #{book.code}  
+            td #{book.title}
+            td #{book.author}
+            td #{book.category}
+            td #{book.language}
+            td #{book.year}
+            td
+              .text-center
+                a(href="")
+                  button.btn.btn-success(type="submit")
+                    i.far.fa-edit
+                    |   Editar
+            td
+              .text-center
+                button.btn.btn-danger(type='button', data-toggle='modal', data-target='#exampleModal')
+                  i.fas.fa-trash-alt
+                  |   Eliminar
+                // Modal
+                #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                  .modal-dialog(role='document')
+                    .modal-content
+                      .modal-header
+                        h5#exampleModalLabel.modal-title Eliminar Libro
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                          span(aria-hidden='true') &times;
+                      .modal-body
+                        | ¿Seguro que quieres eliminar este libro?
+                      .modal-footer
+                        button.btn.btn-primary(type='button', data-dismiss='modal') No
+                        form(action="/libros/eliminar/"+book._id method="POST")
+                          button.btn.btn-danger(type='submit') Sí
+                        
+                
+      
+

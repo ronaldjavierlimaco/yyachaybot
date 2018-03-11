@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+  h1.text-center Nuestros usuarios
+  hr
+  .table-responsive.tamTabla
+    table.table.table-striped.table-hover
+      thead.bg-primary
+        tr
+          th(scope='col') Código
+          th(scope='col') Nombres
+          th(scope='col') Apellidos
+          th(scope='col') Email
+          th(scope='col') Escuela
+      tbody
+        each user in usuarios
+          if user.type != 1
+            tr
+              th(scope='row') #{user.code}
+              td #{user.names}
+              td #{user.surnames}
+              td #{user.email}
+              td #{user.school}
+        
+
