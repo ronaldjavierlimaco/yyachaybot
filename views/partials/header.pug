@@ -2,7 +2,7 @@
 nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
   a.navbar-brand(href='/') 
      i.fas.fa-book
-     |  AlejandriApp
+     |  Chatbot e-learning
   button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
@@ -11,12 +11,12 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
         a.nav-link(href='/')
           | Inicio
           span.sr-only (current)
-      li.nav-item
-        a.nav-link(href='/api') API-Ejemplos
-      li.nav-item
-        a.nav-link(href='/contact') Contáctanos
-      li.nav-item
-        a.nav-link(href='/status') Estado
+      //- li.nav-item
+      //-   a.nav-link(href='/api') API-Ejemplos
+      //- li.nav-item
+      //-   a.nav-link(href='/contact') Contáctanos
+      //- li.nav-item
+      //-   a.nav-link(href='/status') Estado
     ul.navbar-nav.navbar-right
       if !user
         li.nav-item(class=(title == 'Login') ? 'active' : undefined)
