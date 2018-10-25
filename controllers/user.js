@@ -42,7 +42,15 @@ exports.postLogin = (req, res, next) => {
     req.logIn(user, (err) => {
       if (err) { return next(err); }
       req.flash('success', { msg: `¡Bienvenido ${user.names.split(' ')[0]} ${user.surnames.split(' ')[0]}!` });
-      res.redirect(req.session.returnTo || '/');
+      if (user.type == 1) {
+        res.redirect(req.session.returnTo || '/admin');
+      } 
+      else if (user.type == 2){
+        res.redirect(req.session.returnTo || '/alumno');
+      }
+      else {
+        res.redirect(req.session.returnTo || '/');
+      }
     });
   })(req, res, next);
 };
@@ -89,22 +97,19 @@ exports.postSignup = (req, res, next) => {
   const user = new User({
     email: req.body.email,
     password: req.body.password,
-    code: req.body.code,
     names: req.body.names,
     surnames: req.body.surnames,
-    birthdate: req.body.birthdate,
-    school: req.body.school,
-    faculty: req.body.faculty
+    type: 1
   });
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
-    if (err) { return next(err); }
+    if (err) return res.status(500).json({ err })
     if (existingUser) {
       req.flash('errors', { msg: 'La cuenta con esa dirección de correo electrónico ya existe.' });
       return res.redirect('/usuario/registro');
     }
     user.save((err) => {
-      if (err) { return next(err); }
+      if (err) return res.status(500).json({ err })
       req.logIn(user, (err) => {
         if (err) {
           return next(err);

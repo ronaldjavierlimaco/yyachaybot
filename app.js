@@ -40,6 +40,8 @@ dotenv.load({ path: '.env.example' });
 const homeRoutes = require('./routes/home');
 const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
+const adminRoutes = require('./routes/admin');
+const studentRoutes = require('./routes/student');
 
 /**
  * API keys and Passport configuration.
@@ -122,6 +124,8 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 app.use('/', homeRoutes);
 app.use('/usuario', userRoutes);
 app.use('/perfil', profileRoutes);
+app.use('/alumno', studentRoutes);
+app.use('/admin', adminRoutes);
 
 // app.get('/', homeController.index);
 // app.get('/login', userController.getLogin);
