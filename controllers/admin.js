@@ -11,3 +11,15 @@ exports.home = (req, res) => {
     title: 'Inicio'
   });
 };
+
+exports.getUsers = (req, res) => {
+  User
+  .find()
+  .exec((err, allUSers) => {
+    if (err) return res.status(500).json({ err })
+    console.log('Viendo todos los usuarios:', allUSers)
+    res.render('admin/users', {
+      usuarios: allUSers
+    })
+  })
+}

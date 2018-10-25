@@ -8,6 +8,7 @@ block content
 
     form.form-horizontal(action='/perfil/editar', method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
+      input#photolink(type="hidden" name="photo" value=user.profile.photo)
       .form-group
         label.col-sm-3.control-label(for='name') Nombres
         .col-sm-7
@@ -45,12 +46,19 @@ block content
       .form-group
         label.col-sm-3.control-label(for='website') Tipo de usuario
         .col-sm-7
+          if user.type == 1
+            input.form-control(type='text', name='type', id='', value='Administrador' readonly)
           if user.type == 2
             input.form-control(type='text', name='type', id='', value='Alumno' readonly)
       .form-group
-        label.col-sm-3.control-label Imagen de Perfil
+        label.col-sm-6.control-label Imagen de Perfil (click en la imagen para cambiar de foto)
         .col-sm-4
-          img(src=user.gravatar(), class='profile', width='100', height='100')
+          if !user.profile.photo
+            a#uploadphoto(style='cursor: pointer')
+              img#photoactual.img-responsive(src=user.gravatar(), class='profile', width='100', height='100')
+          else
+            a#uploadphoto(style='cursor: pointer')
+              img#photoactual.img-responsive(src=user.profile.photo, class='profile', width='100', height='100')
       .form-group
         .col-sm-offset-3.col-sm-4
           button.btn.btn.btn-primary(type='submit')

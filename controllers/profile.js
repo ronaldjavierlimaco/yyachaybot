@@ -18,6 +18,7 @@ exports.getUpdateProfile = (req, res) => {
 };
 
 exports.postUpdateProfile = (req, res, next) => {
+  // return res.send(req.body)
   req.assert('email', 'Por favor, introduce una dirección de correo electrónico válida.').isEmail();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
@@ -34,6 +35,7 @@ exports.postUpdateProfile = (req, res, next) => {
     user.names = req.body.names || user.names;
     user.surnames = req.body.surnames || user.surnames;
     user.profile.gender = req.body.gender || user.profile.gender;
+    user.profile.photo = req.body.photo || user.profile.photo;
     user.save((err) => {
       if (err) {
         if (err.code === 11000) {
