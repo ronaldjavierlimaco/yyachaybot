@@ -1,41 +1,37 @@
  
 nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
   a.navbar-brand(href='/') 
-     i.fas.fa-book
-     |  Chatbot e-learning
+     i.fas.fa-robot.fa-3x
+     span(style='font-weight: bold')  Chatbot e-learning
   button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarSupportedContent', aria-controls='navbarSupportedContent', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      li.nav-item.active
+      //li.nav-item.active
         a.nav-link(href='/')
           | Inicio
           span.sr-only (current)
-      //- li.nav-item
-      //-   a.nav-link(href='/api') API-Ejemplos
-      //- li.nav-item
-      //-   a.nav-link(href='/contact') Contáctanos
-      //- li.nav-item
-      //-   a.nav-link(href='/status') Estado
     ul.navbar-nav.navbar-right
       if !user
         li.nav-item(class=(title == 'Login') ? 'active' : undefined)
-          a.nav-link(href='/login') Iniciar Sesión
+          a.nav-link(href='/usuario/ingreso') Iniciar Sesión
         li.nav-item(class=(title == 'Create Account') ? 'active' : undefined)
-          a.nav-link(href='/signup') Crear Cuenta
+          a.nav-link(href='/usuario/registro') Crear Cuenta
       else
-         li.nav-item.dropdown
-           a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-             if user.profile.picture
-               center
-                 img(src=user.profile.picture)
-             else
-               img(src=user.gravatar(60))
-             span=  user.profile.name ||  user.email ||  user.id
-             i.caret
-           .dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
-             a.dropdown-item(href='/account') Mi Cuenta
-             .dropdown-divider
-             a.dropdown-item(href='/logout') Cerrar sesión
+        li.nav-item.dropdown
+          a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+            if user.profile.picture
+              center
+                img(src=user.profile.picture)
+            else
+              img(src=user.gravatar(60))
+            span   #{user.names}
+            i.caret
+          ul.dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
+            li
+              a.dropdown-item(href='/perfil') Mi Cuenta
+            li.dropdown-divider
+            li
+              a.dropdown-item(href='/usuario/salir') Cerrar sesión
       
     

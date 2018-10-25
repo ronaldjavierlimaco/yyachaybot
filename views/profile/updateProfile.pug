@@ -1,11 +1,12 @@
+
 extends ../layout
 
 block content
   .container
     .page-header
-      h3 Información de Perfil
+      h3 Editar Perfil
 
-    form.form-horizontal(action='/account/profile', method='POST')
+    form.form-horizontal(action='/perfil/editar', method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
       .form-group
         label.col-sm-3.control-label(for='name') Nombres
@@ -20,33 +21,32 @@ block content
         .col-sm-7
           input.form-control(type='email', name='email', id='email', value=user.email)
       .form-group
-        label.col-sm-3.control-label Genero
+        label.col-sm-3.control-label Género
         .col-sm-6
           label.radio.col-sm-3
-            input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
+            input(type='radio', checked=user.profile.gender=='M', name='gender', value='M', data-toggle='radio')
             span Masculino
           label.radio.col-sm-3
-            input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
+            input(type='radio', checked=user.profile.gender=='F', name='gender', value='F', data-toggle='radio')
             span Femenino
-          label.radio.col-sm-3
-            input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
-            span Otro
+
       .form-group
-        label.col-sm-3.control-label(for='location') Perfiles de Aprendizaje y Puntaje
+        label.col-sm-3.control-label(for='') Perfiles de Aprendizaje y Puntaje
         .row
           .col-sm-4
-            input.form-control(type='text', name='location', id='location', value=user.profile.location readonly)
+            input.form-control(type='text', name='', id='', value='' readonly)
           .col-sm-4
-            input.form-control(type='text', name='location', id='location', value=user.profile.location readonly)  
+            input.form-control(type='text', name='', id='', value='' readonly)  
         .row
           .col-sm-4
-            input.form-control(type='text', name='location', id='location', value=user.profile.location readonly)
+            input.form-control(type='text', name='', id='', value='' readonly)
           .col-sm-4
-            input.form-control(type='text', name='location', id='location', value=user.profile.location readonly)     
+            input.form-control(type='text', name='', id='', value='' readonly)     
       .form-group
         label.col-sm-3.control-label(for='website') Tipo de usuario
         .col-sm-7
-          input.form-control(type='text', name='website', id='website', value=user.profile.website readonly)
+          if user.type == 2
+            input.form-control(type='text', name='type', id='', value='Alumno' readonly)
       .form-group
         label.col-sm-3.control-label Imagen de Perfil
         .col-sm-4

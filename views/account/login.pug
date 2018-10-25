@@ -1,20 +1,20 @@
 extends ../layout
 
 block content
-  .text-center
-    form.form-signin(action='/login' method='POST')
-      input(type='hidden', name='_csrf', value=_csrf)
-      //- img.mb-4(src='https://getbootstrap.com/assets/brand/bootstrap-solid.svg', alt='', width='72', height='72')
-      div(style='font-size:3em; color:#007bff')
-        i.fas.fa-book
-      h1.h3.mb-3.font-weight-normal Porfavor inicia sesión
-      label.sr-only(for='email') Email 
-      input#email.form-control(type='email', name='email', placeholder='Email', required, autofocus)
-      label.sr-only(for='password') Contraseña
-      input#password.form-control(type='password', name='password', placeholder='Contraseña', required)
-      br
-      button.btn.btn-lg.btn-primary.btn-block(type='submit') Iniciar sesión
-      a.btn.btn-link(href='/forgot') ¿Olvidaste tu contraseña?
+  .container
+    .text-center
+      form.form-signin(action='/usuario/ingreso' method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        div(style='font-size:3em; color:#007bff')
+          i.fas.fa-robot
+        h1.h3.mb-3.font-weight-normal Porfavor inicia sesión
+        label.sr-only(for='email') Email 
+        input#email.form-control(type='email', name='email', placeholder='Email', required, autofocus)
+        label.sr-only(for='password') Contraseña
+        input#password.form-control(type='password', name='password', placeholder='Contraseña', required)
+        br
+        button.btn.btn-lg.btn-primary.btn-block(type='submit') Iniciar sesión
+        a.btn.btn-link(href='/usuario/recuperarcontrasena') ¿Olvidaste tu contraseña?
   //- hr
   //- p.h5.text-center.tamTitulo Tambien puedes loguearte con las siguientes plataformas:
   //- .row

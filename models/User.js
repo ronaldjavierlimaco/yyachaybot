@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   school: String,
   faculty: String,
-  // 1: administrador | 2: Estudiante
+  // 1: administrador | 2: Estudiante /3: profesor
   type: {type:Number, default:2},
   passwordResetToken: String,
   passwordResetExpires: Date,
