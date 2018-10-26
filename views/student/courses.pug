@@ -1,0 +1,31 @@
+
+extends ../layout
+
+block content
+  .container
+    h1.text-center Lista de Cursos
+    hr
+  
+    .table-responsive.tamTabla
+      table.table.table-striped.table-hover
+        thead.bg-primary
+          tr
+            th(scope='col') #
+            th(scope='col') Título del Curso
+            th(scope='col') E.A.P
+            th(scope='col') Ciclo
+            th(scope='col') Profesor
+            th(scope='col') 
+        tbody
+          each curso, index in cursos
+            tr
+              th(scope='row') #{index + 1}
+              td  #{curso.title}
+              if curso.eap == 1
+                td  Ingeniería de Sistemas
+              else
+                td  Ingeniería de Software
+              td  #{curso.cycle}
+              td  #{curso.idTeacher.names} #{curso.idTeacher.surnames}
+              td 
+                a.btn.btn-primary(href=`/alumno/cursos/${curso._id}`, role='button') Ver más

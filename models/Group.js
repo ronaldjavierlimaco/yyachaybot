@@ -6,9 +6,11 @@ const mongoose = require('mongoose');
 const groupSchema = new mongoose.Schema({
   title: String,
   description: String,
-  idCourse: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
+  idCourse: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
 
-}, { timestamps: true });
+  students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
+
+}, { timestamps: true, usePushEach: true  });
 
 const Group = mongoose.model('Group', groupSchema);
 

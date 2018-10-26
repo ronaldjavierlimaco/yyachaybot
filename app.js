@@ -48,7 +48,7 @@ const teacherRoutes = require('./routes/teacher');
  * API keys and Passport configuration.
  */
 const passportConfig = require('./config/passport');
-const adminConfig = require('./config/admin');
+const config = require('./config/user');
 
 /**
  * Connect to MongoDB.
@@ -124,10 +124,10 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 
 app.use('/', homeRoutes);
 app.use('/usuario', userRoutes);
-app.use('/perfil', profileRoutes);
-app.use('/alumno', studentRoutes);
-app.use('/admin', adminRoutes);
-app.use('/profesor', teacherRoutes);
+app.use('/perfil', passportConfig.isAuthenticated,profileRoutes);
+app.use('/alumno', passportConfig.isAuthenticated, config.isStudent, studentRoutes);
+app.use('/admin', passportConfig.isAuthenticated, config.isAdmin, adminRoutes);
+app.use('/profesor', passportConfig.isAuthenticated, config.isTeacher, teacherRoutes);
 
 // app.get('/', homeController.index);
 // app.get('/login', userController.getLogin);
