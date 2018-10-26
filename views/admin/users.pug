@@ -2,8 +2,10 @@ extends ../layout
 
 block content
   .container
-    h1.text-center Nuestros usuarios
+    h1.text-center Lista de Usuarios
     hr
+    .col-sm-4
+      a.btn.btn-success(href='/admin/usuario/crear', role='button') Crear Usuario
     .table-responsive.tamTabla
       table.table.table-striped.table-hover
         thead.bg-primary
@@ -32,9 +34,9 @@ block content
                 else if usuario.type == 2
                   td Alumno
                 else
-                  td ...
+                  td Profesor
                 td 
-                  a.btn.btn-primary(href='#', role='button') Ver más
+                  a.btn.btn-primary(href=`/admin/usuarios/${usuario._id}`, role='button') Ver más
         
           
 
