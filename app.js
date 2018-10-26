@@ -42,6 +42,7 @@ const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
 const adminRoutes = require('./routes/admin');
 const studentRoutes = require('./routes/student');
+const teacherRoutes = require('./routes/teacher');
 
 /**
  * API keys and Passport configuration.
@@ -126,6 +127,7 @@ app.use('/usuario', userRoutes);
 app.use('/perfil', profileRoutes);
 app.use('/alumno', studentRoutes);
 app.use('/admin', adminRoutes);
+app.use('/profesor', teacherRoutes);
 
 // app.get('/', homeController.index);
 // app.get('/login', userController.getLogin);

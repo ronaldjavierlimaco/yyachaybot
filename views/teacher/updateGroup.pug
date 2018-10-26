@@ -1,0 +1,23 @@
+
+extends ../layout
+
+block content
+  .container
+    .page-header
+      h3 Editar Grupo
+      hr
+      form.form-horizontal(action=`/profesor/cursos/${grupo.idCourse}/grupos/${grupo._id}/editar` id='signup-form', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          label.col-sm-3.control-label(for='name') Titulo 
+          .col-sm-7
+            input.form-control(type='text', name='title', id='name', value=grupo.title)
+        .form-group
+          label.col-sm-3.control-label(for='name') Descripción 
+          .col-sm-7
+            textarea#exampleFormControlTextarea1.form-control(rows='3' name='description') #{grupo.description}
+        .form-group
+          .col-sm-offset-3.col-sm-7
+            button.btn.btn-success(type='submit')
+              i.fa.fa-user-plus
+              | Editar grupo

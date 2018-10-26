@@ -49,6 +49,7 @@ exports.getUpdateUser = (req, res) => {
 }
 
 exports.postUpdateUser = (req, res) => {
+  // return res.send(req.body)
   req.assert('email', 'Por favor, introduce una dirección de correo electrónico válida.').isEmail();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 

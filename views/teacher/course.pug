@@ -1,0 +1,73 @@
+
+
+extends ../layout
+
+block content
+  .container
+    .page-header
+      h3 Detalle del curso
+      hr
+    .form-group
+      label.col-sm-3.control-label(for='name') Titulo 
+      .col-sm-7
+        input.form-control(type='text', name='title', id='name', value=curso.title readonly)
+    .form-group
+      label.col-sm-3.control-label(for='name') E.A.P
+      .col-sm-7
+        if curso.eap == 1
+          input.form-control(type='text', name='eap', id='name', value='Ingeniería de Sistemas' readonly)   
+        else
+          input.form-control(type='text', name='eap', id='name', value='Ingeniería de Software' readonly)      
+    .form-group
+      label.col-sm-3.control-label(for='email') Ciclo
+      .col-sm-7
+        input.form-control(type='text', name='cycke', id='email', value=curso.cycle readonly)
+    .form-group 
+      label.col-sm-3.control-label(for='email') Descripcion
+      .col-sm-7
+        textarea#exampleFormControlTextarea1.form-control(rows='3' name='description' disabled) #{curso.description}
+    .form-group
+      label.col-sm-3.control-label Imagen del curso
+      .col-sm-4
+        img(src=curso.image, class='profile', width='100', height='100')
+    .form-group
+      label.col-sm-3.control-label(for='email') Profesor asignado
+      - var profe = curso.idTeacher.names +' '+ curso.idTeacher.surnames
+      .col-sm-7
+        input.form-control(type='text', name='cycke', id='email', value=profe readonly)
+    br
+    br
+    .page-header
+      h3 Lista de Grupos
+      a.btn.btn-primary(href=`/profesor/cursos/${curso._id}/grupo/crear`, role='button') Crear Grupo
+      br
+      br
+      each grupo, index in grupos
+        h4 Grupo #{index + 1}
+        a.btn.btn-primary(href=`/profesor/cursos/${curso._id}/grupos/${grupo._id}/editar`, role='button') Editar Grupo #{index + 1}
+        .form-group
+          label.col-sm-3.control-label(for='name') Titulo 
+          .col-sm-7
+            input.form-control(type='text', name='title', id='name', value=grupo.title readonly)
+        .form-group
+          label.col-sm-3.control-label(for='name') Descripción 
+          .col-sm-7
+            textarea#exampleFormControlTextarea1.form-control(rows='3' name='description' disabled) #{grupo.description}
+        .form-group    
+          .label.col-sm-3.control-label(for='name') Lista de Alumnos
+          .table-responsive.tamTabla
+            table.table.table-striped.table-hover
+              thead.bg-primary
+                tr
+                  th(scope='col') #
+                  th(scope='col') Nombres
+                  th(scope='col') Apellidos
+                  th(scope='col') Foto de Perfil
+                  th(scope='col') Perfil de aprendizaje - puntaje
+              tbody
+                tr
+                  th(scope='row') 1
+                  td Jesus Martin
+                  td Espinoza Rivera
+                  td Foto...
+                  td Cinético: 10pts

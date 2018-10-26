@@ -49,7 +49,7 @@ exports.postLogin = (req, res, next) => {
         res.redirect(req.session.returnTo || '/alumno');
       }
       else {
-        res.redirect(req.session.returnTo || '/');
+        res.redirect(req.session.returnTo || '/profesor');
       }
     });
   })(req, res, next);

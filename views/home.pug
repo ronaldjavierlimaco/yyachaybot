@@ -63,4 +63,29 @@ block content
             p
               a.btn.btn-secondary(href='', role='button') Ver más »
           
-      hr             
+      hr
+    else if user.type == 3
+      .jumbotron
+        .container
+          h1.display-3 Bienvenido a e-learning Chatbot!
+          p
+            | 
+          //- p
+          //-   a.btn.btn-primary.btn-lg(href='#', role='button') Ver más »        
+      .container
+        // Example row of columns
+        .row
+          .col-md-4
+            h2 Gestión de Cursos asignados
+            p
+              | 
+            p
+              a.btn.btn-secondary(href='/profesor/cursos', role='button') Ver más »
+          .col-md-4
+            h2 Gestión de Chatbots
+            p
+              | 
+            p
+              a.btn.btn-secondary(href='', role='button') Ver más »
+          
+      hr
