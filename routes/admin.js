@@ -18,4 +18,15 @@ router.post('/usuarios/:id/contrasenia', adminController.postUpdatePassword);
 router.get('/usuario/crear', adminController.getCreateUser);
 router.post('/usuario/crear', adminController.postCreateUser);
 
+router.get('/cursos', adminController.getCourses);
+
+router.get('/cursos/:id', adminController.getCourse);
+
+router.get('/cursos/:id/editar', adminController.getUpdateCourse);
+router.post('/cursos/:id/editar', adminController.postUpdateCourse);
+
+router.get('/curso/crear', adminController.getCreateCourse);
+router.post('/curso/crear', adminController.postCreateCourse);
+
+
 module.exports = router;

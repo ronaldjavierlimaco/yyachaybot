@@ -4,7 +4,7 @@ const crypto = bluebird.promisifyAll(require('crypto'));
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
-const Book = require('../models/Book');
+const Course = require('../models/Course');
 
 exports.home = (req, res) => {
   res.render('home', {
@@ -139,3 +139,104 @@ exports.postCreateUser = (req, res) => {
     });
   });
 }
+
+exports.getCourses = (req, res) => {
+  Course
+  .find()
+  .exec((err, allCourses) => {
+    if (err) return res.status(500).json({ err })
+    console.log(allCourses)
+    res.render('admin/courses', {
+      title: 'Ver cursos',
+      cursos: allCourses
+    })
+  })
+}
+
+exports.getCreateCourse = (req, res) => {
+  User
+  .find({ type: 3 })
+  .exec((err, getTeachers) => {
+    if (err) return res.status(500).json({ err })
+    console.log(getTeachers)
+    res.render('admin/createCourse', {
+      title: 'Crear curso',
+      profesores: getTeachers
+    })   
+  })
+}
+
+exports.postCreateCourse = (req, res) => {
+  // return res.send(req.body)
+  const newCourse = new Course ({
+    title: req.body.title,
+    eap: req.body.eap,
+    cycle: req.body.cycle,
+    description: req.body.description,
+    image: req.body.image,
+    idTeacher: req.body.idTeacher,
+    idCreatorAdmin: req.body.idCreatorAdmin
+  })
+  newCourse.save((err, createCourse) => {
+    if (err) return res.status(500).json({ err })
+    console.log(createCourse)
+    res.redirect('/admin/cursos')
+  })
+}
+
+exports.getCourse = (req, res) => {
+  Course
+  .findById(req.params.id)
+  .populate('idTeacher')
+  .exec((err, getCourse) => {
+    if (err) return res.status(500).json({ err })
+    console.log(getCourse)
+    res.render('admin/course', {
+      curso: getCourse
+    })
+  })
+}
+
+exports.getUpdateCourse = (req, res) => {
+  Course
+  .findById(req.params.id)
+  .populate('idTeacher')
+  .exec((err, getCourse) => {
+    if (err) return res.status(500).json({ err })
+    console.log(getCourse)
+    
+    User
+    .find({ type: 3 })
+    .exec((err, allTeachers ) => {
+      if (err) return res.status(500).json({ err })
+      
+      res.render('admin/updateCourse', {
+        curso: getCourse,
+        profesores: allTeachers
+      })
+    })
+  })
+}
+
+exports.postUpdateCourse = (req, res) => {
+  // return res.send(req.body)
+  Course
+  .findById(req.params.id)
+  .exec((err, course) => {
+    if (err) return res.status(500).json({ err })
+
+    course.title = req.body.title || course.title
+    course.eap = req.body.eap || course.eap
+    course.cycle = req.body.cycle || course.cycle
+    course.description = req.body.description || course.description
+    course.image = req.body.image || course.image
+    course.idTeacher = req.body.idTeacher || course.idTeacher
+
+    course.save((err, editUser) => {
+      if (err) return res.status(500).json({ err })
+      req.flash('success', { msg: 'El curso ha sido actualizado.' });
+      res.redirect(`/admin/cursos/${editUser._id}`);
+    })
+  })
+}
+
