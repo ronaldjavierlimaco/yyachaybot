@@ -118,10 +118,60 @@ app.use((req, res, next) => {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
+// You can find your project ID in your Dialogflow agent settings
+const projectId = process.env.DFPROJECT_ID;
+const client_email = process.env.DFCLIENT_EMAIL;
+const private_key = process.env.DFPRIVATE_KEY;
+const sessionId = 'quickstart-session-id';
+
+const query = 'Hola, como te llamas?';
+const languageCode = 'es-ES';
+ 
+// Instantiate a DialogFlow client.
+const dialogflow = require('dialogflow');
+const sessionClient = new dialogflow.SessionsClient({
+  credentials: {
+    client_email,
+    private_key
+  },
+  projectId
+});
+ 
+// Define session path
+const sessionPath = sessionClient.sessionPath(projectId, sessionId);
+ 
+// The text query request.
+const request = {
+  session: sessionPath,
+  queryInput: {
+    text: {
+      text: query,
+      languageCode: languageCode,
+    },
+  },
+};
+ 
+// Send request and log result
+sessionClient
+  .detectIntent(request)
+  .then(responses => {
+    console.log('Detected intent');
+    const result = responses[0].queryResult;
+    console.log(`  Query: ${result.queryText}`);
+    console.log(`  Response: ${result.fulfillmentText}`);
+    if (result.intent) {
+      console.log(`  Intent: ${result.intent.displayName}`);
+    } else {
+      console.log(`  No intent matched.`);
+    }
+  })
+  .catch(err => {
+    console.error('ERROR:', err);
+  });
+
 /**
  * Primary app routes.
  */
-
 app.use('/', homeRoutes);
 app.use('/usuario', userRoutes);
 app.use('/perfil', passportConfig.isAuthenticated,profileRoutes);
