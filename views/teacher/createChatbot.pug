@@ -3,5 +3,22 @@ extends ../layout
 
 block content
   .container
-    h1.text-center Crear Chatbot
+    .page-header
+      h1.text-center Crear Chatbot
     hr
+    form.form-horizontal(action=`` id='signup-form', method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      input(type='hidden', name='idCourse' value='')
+      .form-group
+        label.col-sm-3.control-label(for='name') Nombre
+        .col-sm-7
+          input.form-control(type='text', name='title' required)
+      .form-group
+        label.col-sm-3.control-label(for='name') Descripción 
+        .col-sm-7
+          textarea#exampleFormControlTextarea1.form-control(rows='3' name='description')
+      .form-group
+        label.col-sm-3.control-label(for='name') Perfil de Aprendizaje Predominante
+        .col-sm-7
+          input.form-control(type='text', name='title' required)
+      
