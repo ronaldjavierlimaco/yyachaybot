@@ -104,3 +104,35 @@ exports.postUpdateGroup = (req, res) => {
     })
   })
 }
+
+exports.getChatbots = (req, res) => {
+  res.render('teacher/chatbots', {
+    title: 'Lista de chatbots'
+  })
+}
+
+exports.getChatbot = (req, res) => {
+  res.render('teachear/chatbot', {
+    title: 'Detalle Chatbot'
+  })
+}
+
+exports.getCreateChatbot = (req, res) => {
+  res.render('teacher/createChatbot', {
+    title: 'Crear chatbot'
+  })
+}
+
+exports.postCreateChatbot = (req, res) => {
+  return res.send(req.body)
+}
+
+exports.getUpdateChatbot = (req, res) => {
+  res.render('teacher/updateChatbot', {
+    title: 'Actualizar chatbot'
+  })
+}
+
+exports.postUpdateChatbot = (req, res) => {
+  return res.send(req.body)
+}

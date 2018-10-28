@@ -16,4 +16,15 @@ router.post('/cursos/:id/grupos/:idGroup/editar', teacherController.postUpdateGr
 router.get('/cursos/:id/grupo/crear', teacherController.getCreateGroup);
 router.post('/cursos/:id/grupo/crear', teacherController.postCreateGroup);
 
+router.get('/chatbots/', teacherController.getChatbots);
+
+router.get('/chatbots/:id', teacherController.getChatbot);
+
+router.get('/chatbots/:id/editar', teacherController.getUpdateChatbot);
+router.post('/chatbots/:id/editar', teacherController.postUpdateChatbot);
+
+router.get('/chatbot/crear', teacherController.getCreateChatbot);
+router.post('/chatbot/crear', teacherController.postCreateChatbot);
+
+
 module.exports = router;

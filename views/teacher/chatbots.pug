@@ -1,0 +1,20 @@
+
+extends ../layout
+
+block content
+  .container
+    h1.text-center Lista de Chatbots
+    hr
+    .col-sm-12
+      a.btn.btn-info.btn-lg.btn-block.active(href='/profesor/chatbot/crear', role='button' aria-pressed='true') Crear Chatbot
+    br  
+    .table-responsive.tamTabla
+      table.table.table-striped.table-dark
+        thead
+          tr
+            th(scope='col') #
+            th(scope='col') Nombre
+            th(scope='col') Descripción
+            th(scope='col') Fecha de creación
+            th(scope='col') Aprendizaje predominante
+            th(scope='col') 
