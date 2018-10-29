@@ -6,19 +6,71 @@ block content
     .page-header
       h1.text-center Crear Chatbot
     hr
-    form.form-horizontal(action=`` id='signup-form', method='POST')
+    form.form-horizontal(action=`/profesor/chatbot/crear` id='signup-form', method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
-      input(type='hidden', name='idCourse' value='')
+      input(type='hidden', name='creatorTeacher' value=user._id)
       .form-group
         label.col-sm-3.control-label(for='name') Nombre
         .col-sm-7
-          input.form-control(type='text', name='title' required)
+          input.form-control(type='text', name='name' required)
       .form-group
         label.col-sm-3.control-label(for='name') Descripción 
         .col-sm-7
           textarea#exampleFormControlTextarea1.form-control(rows='3' name='description')
       .form-group
-        label.col-sm-3.control-label(for='name') Perfil de Aprendizaje Predominante
+        label.col-sm-3.control-label(for='email') Curso
         .col-sm-7
-          input.form-control(type='text', name='title' required)
+          select.custom-select(name='course' required)
+            option(selected='') Escoger un curso
+            each curso in cursos
+              option(value=curso._id) #{curso.title}
+            
+      .form-group
+        label.col-sm-7.control-label(for='name') Perfil de Aprendizaje Predominante
+        .col-sm-7
+            input.form-control(type='text', name='learningProfile' required readonly)
+    
+      h3.text-center Crea tu primera Intención
+      .form-group
+        label.col-sm-3.control-label(for='name') Nombre de la intención
+        .col-sm-7
+          input.form-control(type='text', name='nombreIntencion' required)
+      hr
+      .form-group
+        label.col-sm-3.control-label(for='name') Pregunta(s)
+
+        #education_fields
+        .col-sm-7
+          .input-group.mb-3
+            textarea.form-control(rows='1' name='preguntas[]')
+            .input-group-append
+              button#button-addon2.btn.btn-primary(type='button' onclick="education_fields();")
+                span
+                  i.fas.fa-plus
+        br
+        .clear
+
+      hr   
+      .form-group
+        label.col-sm-3.control-label(for='name') Respuesta(s)
+
+        #education_fields2
+        .col-sm-7
+          .input-group.mb-3
+            textarea.form-control(rows='1' name='respuestas[]')
+            .input-group-append
+              button#button-addon2.btn.btn-primary(type='button' onclick="education_fields2();")
+                span
+                  i.fas.fa-plus
+        br
+        .clear
+
+      hr  
+      .form-group
+        .col-sm-offset-3.col-sm-7
+          button.btn.btn-success(type='submit')
+            i.fa.fa-user-plus
+            | Crear Chatbot
+    
+      
       

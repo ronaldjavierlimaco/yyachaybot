@@ -6,6 +6,7 @@ const passport = require('passport');
 const User = require('../models/User');
 const Course = require('../models/Course');
 const Group = require('../models/Group')
+const Chatbot = require('../models/Chatbot');
 
 const projectId = process.env.DFPROJECT_ID;
 const client_email = process.env.DFCLIENT_EMAIL;
@@ -125,90 +126,132 @@ exports.postUpdateGroup = (req, res) => {
 }
 
 exports.getChatbots = (req, res) => {
-  // const sessionClient = new dialogflow.SessionsClient({
-  //   credentials: {
-  //     client_email,
-  //     private_key
-  //   },
-  //   projectId
-  // });
-  // // Define session path
-  // const sessionPath = sessionClient.sessionPath(projectId, sessionId);
-  
-  // // The text query request.
+  // const intentsClient = new dialogflow.IntentsClient(credentials);
+
+  // const projectAgentPath = intentsClient.projectAgentPath(projectId, sessionId);
+
   // const request = {
-  //   session: sessionPath,
-  //   queryInput: {
-  //     text: {
-  //       text: query,
-  //       languageCode: languageCode,
-  //     },
-  //   },
+  //   parent: projectAgentPath,
+  //   intentView: 'INTENT_VIEW_FULL'
   // };
-  
-  // // Send request and log result
-  // sessionClient
-  //   .detectIntent(request)
+
+  // intentsClient
+  //   .listIntents(request)
   //   .then(responses => {
-  //     console.log('Detected intent');
-  //     const result = responses[0].queryResult;
-  //     console.log(`  Query: ${result.queryText}`);
-  //     console.log(`  Response: ${result.fulfillmentText}`);
-  //     if (result.intent) {
-  //       console.log(`  Intent: ${result.intent.displayName}`);
-  //     } else {
-  //       console.log(`  No intent matched.`);
-  //     }
+  //     responses[0].forEach(intent => {
+  //       console.log('====================');
+  //       console.log(`id: ${intent.name.split('/')[4]}`);
+  //       console.log(`Nombre: ${intent.displayName}`);
+  //       console.log(`preguntas: ${JSON.stringify(intent.trainingPhrases)}`)
+  //       console.log(`respuestas: ${JSON.stringify(intent.messages)}`)
+  //     });
   //   })
   //   .catch(err => {
-  //     console.error('ERROR:', err);
+  //     console.error('Error al enumerar intenciones:', err);
   //   });
-
-  const intentsClient = new dialogflow.IntentsClient(credentials);
-
-  const projectAgentPath = intentsClient.projectAgentPath(projectId, sessionId);
-
-  const request = {
-    parent: projectAgentPath,
-    intentView: 'INTENT_VIEW_FULL'
-  };
-
-  intentsClient
-    .listIntents(request)
-    .then(responses => {
-      responses[0].forEach(intent => {
-        console.log('====================');
-        console.log(`id: ${intent.name.split('/')[4]}`);
-        console.log(`Nombre: ${intent.displayName}`);
-        console.log(`preguntas: ${JSON.stringify(intent.trainingPhrases)}`)
-        console.log(`respuestas: ${JSON.stringify(intent.messages)}`)
-      });
+  Chatbot
+  .find({ creatorTeacher: req.user._id })
+  .exec((err, chatbots) => {
+    console.log(chatbots)
+    if (err) return res.status(500).json({ err })
+    res.render('teacher/chatbots', {
+      title: 'Lista de chatbots',
+      chatbots
     })
-    .catch(err => {
-      console.error('Error al enumerar intenciones:', err);
-    });
-
-  res.render('teacher/chatbots', {
-    title: 'Lista de chatbots',
-    // resultado: result
   })
 
 }
 
 exports.getChatbot = (req, res) => {
-  res.render('teachear/chatbot', {
+  res.render('teacher/chatbot', {
     title: 'Detalle Chatbot'
   })
 }
 
 exports.getCreateChatbot = (req, res) => {
-  res.render('teacher/createChatbot', {
-    title: 'Crear chatbot'
+  Course
+  .find({ idTeacher: req.user._id })
+  .exec((err, courses) => {
+    if (err) return res.status(500).json({ courses })
+    
+    res.render('teacher/createChatbot', {
+      title: 'Crear chatbot',
+      cursos: courses
+    })
   })
 }
 
 exports.postCreateChatbot = (req, res) => {
-  return res.send(req.body)
+  
+  const intentsClient = new dialogflow.IntentsClient(credentials);
+  
+  const agentPath = intentsClient.projectAgentPath(projectId, sessionId);
+
+  const displayName = req.body.nombreIntencion
+
+  const trainingPhrases = [];
+
+  const trainingPhrasesParts = req.body.preguntas
+
+  const messageTexts = req.body.respuestas
+
+  trainingPhrasesParts.forEach(trainingPhrasesPart => {
+    const part = {
+      text: trainingPhrasesPart,
+    };
+
+    // Here we create a new training phrase for each provided part.
+    const trainingPhrase = {
+      type: 'EXAMPLE',
+      parts: [part],
+    };
+
+    trainingPhrases.push(trainingPhrase);
+  });
+
+  const messageText = {
+    text: messageTexts,
+  };
+
+  const message = {
+    text: messageText,
+  };
+  
+  const intent = {
+    displayName: displayName,
+    trainingPhrases: trainingPhrases,
+    messages: [message],
+  };
+
+  const createIntentRequest = {
+    parent: agentPath,
+    intent: intent,
+  };
+
+  // Create the intent
+  intentsClient
+    .createIntent(createIntentRequest)
+    .then(responses => {
+      console.log(`Intent ${responses[0].name} created`);
+
+      const newChatbot = new Chatbot({
+        name: req.body.name,
+        description: req.body.description,
+        creatorTeacher: req.body.creatorTeacher,
+        course: req.body.course
+      })
+      newChatbot.intentions.push(responses[0].name.split('/')[4])
+      newChatbot.save((err, savedChatbot) => {
+        console.log(savedChatbot)
+        if (err) return res.status(500).json({ err })
+
+        req.flash('success', { msg: `El Chatbot ha sido creado` });
+        res.redirect('/profesor/chatbots')
+      })
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
 }
 
 exports.getUpdateChatbot = (req, res) => {

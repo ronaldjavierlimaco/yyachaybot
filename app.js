@@ -20,6 +20,7 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+const moment = require('moment');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
@@ -44,12 +45,16 @@ const adminRoutes = require('./routes/admin');
 const studentRoutes = require('./routes/student');
 const teacherRoutes = require('./routes/teacher');
 
+moment.locale('es')
+
 /**
  * API keys and Passport configuration.
  */
 const passportConfig = require('./config/passport');
 const config = require('./config/user');
 
+
+app.locals.moment = moment;
 /**
  * Connect to MongoDB.
  */
