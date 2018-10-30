@@ -20,23 +20,22 @@ block content
             th(scope='col') 
         tbody
           each usuario, index in usuarios
-            if usuario.type != 1
-              tr
-                th(scope='row') #{index + 1}
-                td #{usuario.names}
-                td #{usuario.surnames}
-                td #{usuario.email}
-                td
-                  img.img-responsive(src=usuario.profile.photo, class='profile', width='100', height='100')
-                td ...
-                if usuario.type == 1
-                  td Administrador
-                else if usuario.type == 2
-                  td Alumno
-                else
-                  td Profesor
-                td 
-                  a.btn.btn-primary(href=`/admin/usuarios/${usuario._id}`, role='button') Ver más
+            tr
+              th(scope='row') #{index + 1}
+              td #{usuario.names}
+              td #{usuario.surnames}
+              td #{usuario.email}
+              td
+                img.img-responsive(src=usuario.profile.photo, class='profile', width='100', height='100')
+              td ...
+              if usuario.type == 1
+                td Administrador
+              else if usuario.type == 2
+                td Alumno
+              else
+                td Profesor
+              td 
+                a.btn.btn-primary(href=`/admin/usuarios/${usuario._id}`, role='button') Ver más
         
           
 

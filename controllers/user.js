@@ -99,7 +99,7 @@ exports.postSignup = (req, res, next) => {
     password: req.body.password,
     names: req.body.names,
     surnames: req.body.surnames,
-    type: 1
+    type: 2 //creando tipo de usuario estudiante
   });
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
