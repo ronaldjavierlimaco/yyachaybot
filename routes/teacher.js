@@ -26,5 +26,8 @@ router.post('/chatbots/:id/editar', teacherController.postUpdateChatbot);
 router.get('/chatbot/crear', teacherController.getCreateChatbot);
 router.post('/chatbot/crear', teacherController.postCreateChatbot);
 
+router.get('/curso/crear', teacherController.getCreateCourse);
+router.post('/curso/crear', teacherController.postCreateCourse);
+
 
 module.exports = router;

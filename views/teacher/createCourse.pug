@@ -1,0 +1,54 @@
+
+extends ../layout
+
+block content
+  .container
+    h1.text-center Crear curso
+
+    form.form-horizontal(action="/profesor/curso/crear" id='signup-form', method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      input(type='hidden' name='idTeacher' value=user._id)
+      .form-group
+        label.col-sm-3.control-label(for='names') Título del Curso
+        .col-sm-7
+          input.form-control(type='text', name='title', id='title', placeholder='Titulo del curso', autofocus, required)
+      .form-group
+        label.col-sm-3.control-label(for='surnames') E.A.P
+        .col-sm-7
+          select.custom-select(name='eap' required)
+            option(selected='') Elegir E.A.P
+            option(value= 1) Ingeniería de Sistemas
+            option(value= 2) Ingeniería de Software
+      .form-group
+        label.col-sm-3.control-label(for='email') Ciclo del curso
+        .col-sm-7
+          select.custom-select(name='cycle' required)
+            option(selected='') Elegir ciclo del curso
+            option(value= 0) 0
+            option(value= 1) I
+            option(value= 2) II
+            option(value= 3) III
+            option(value= 4) IV
+            option(value= 5) V
+            option(value= 6) VI
+            option(value= 7) VII
+            option(value= 8) VIII
+            option(value= 9) IX
+            option(value= 10) X
+      .form-group
+        label.col-sm-3.control-label(for='names') Descripcion del Curso
+        .col-sm-7
+          textarea#exampleFormControlTextarea1.form-control(rows='3' name='description')
+      .form.-group
+        label.col-sm-6.control-label Imagen del curso
+          a#uploadphoto(style='cursor: pointer')
+            input#photolink(type="hidden" name="image")
+            center
+              img#photoactual.img-responsive.img-crear-servi(src="https://imageog.flaticon.com/icons/png/512/25/25340.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF", alt="" width='150', height='100')
+              p Agregar una fotografía
+
+      .form-group
+        .col-sm-offset-3.col-sm-7
+          button.btn.btn-success(type='submit')
+            i.fa.fa-user-plus
+            | Crear curso

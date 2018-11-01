@@ -263,3 +263,36 @@ exports.getUpdateChatbot = (req, res) => {
 exports.postUpdateChatbot = (req, res) => {
   return res.send(req.body)
 }
+
+exports.getCreateCourse = (req, res) => {
+  res.render('teacher/createCourse', {
+    title: 'Crear curso'
+  })   
+}
+
+exports.postCreateCourse = (req, res) => {
+  // return res.send(req.body)
+  const newCourse = new Course ({
+    title: req.body.title,
+    eap: req.body.eap,
+    cycle: req.body.cycle,
+    description: req.body.description,
+    image: req.body.image,
+    idTeacher: req.body.idTeacher
+  })
+  newCourse.save((err, createCourse) => {
+    if (err) return res.status(500).json({ err })
+
+    const newChatbot = new Chatbot({
+      creatorTeacher: createCourse.idTeacher,
+      course: createCourse._id
+    })
+    newChatbot.save((err, savedChatbot) => {
+      console.log(savedChatbot)
+      if (err) return res.status(500).json({ err })
+        
+      req.flash('success', { msg: `El curso ha sido creado` });
+      res.redirect('/admin/cursos');
+    })
+  })
+}

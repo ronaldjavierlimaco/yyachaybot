@@ -4,6 +4,9 @@ extends ../layout
 block content
   .container
     h1.text-center Lista de Cursos Asignados
+    .col-sm-12
+      a.btn.btn-secondary.btn-lg.btn-block.active(href='/profesor/curso/crear', role='button', aria-pressed='true') Crear Curso
+    br
     hr
     .table-responsive.tamTabla
       table.table.table-striped.table-hover

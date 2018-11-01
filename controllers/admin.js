@@ -180,8 +180,18 @@ exports.postCreateCourse = (req, res) => {
   })
   newCourse.save((err, createCourse) => {
     if (err) return res.status(500).json({ err })
-    console.log(createCourse)
-    res.redirect('/admin/cursos')
+
+    const newChatbot = new Chatbot({
+      creatorTeacher: createCourse.idTeacher,
+      course: createCourse._id
+    })
+    newChatbot.save((err, savedChatbot) => {
+      console.log(savedChatbot)
+      if (err) return res.status(500).json({ err })
+        
+      req.flash('success', { msg: `El curso ha sido creado` });
+      res.redirect('/admin/cursos');
+    })
   })
 }
 

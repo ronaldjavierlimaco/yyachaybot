@@ -32,12 +32,6 @@ dotenv.load({ path: '.env.example' });
 /**
  * Controllers (route handlers).
  */
-// const homeController = require('./controllers/home');
-// const userController = require('./controllers/user');
-// const adminController = require('./controllers/admin');
-// const apiController = require('./controllers/api');
-// const contactController = require('./controllers/contact');
-
 const homeRoutes = require('./routes/home');
 const userRoutes = require('./routes/user');
 const profileRoutes = require('./routes/profile');
@@ -132,24 +126,6 @@ app.use('/perfil', passportConfig.isAuthenticated,profileRoutes);
 app.use('/alumno', passportConfig.isAuthenticated, config.isStudent, studentRoutes);
 app.use('/admin', passportConfig.isAuthenticated, config.isAdmin, adminRoutes);
 app.use('/profesor', passportConfig.isAuthenticated, config.isTeacher, teacherRoutes);
-
-// app.get('/', homeController.index);
-// app.get('/login', userController.getLogin);
-// app.post('/login', userController.postLogin);
-// app.get('/logout', userController.logout);
-// app.get('/forgot', userController.getForgot);
-// app.post('/forgot', userController.postForgot);
-// app.get('/reset/:token', userController.getReset);
-// app.post('/reset/:token', userController.postReset);
-// app.get('/signup', userController.getSignup);
-// app.post('/signup', userController.postSignup);
-// app.get('/contact', contactController.getContact);
-// app.post('/contact', contactController.postContact);
-// app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
-// app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
-// app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
-// app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
-// app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 /**
  * Error Handler.
