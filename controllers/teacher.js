@@ -38,7 +38,7 @@ exports.getCourses = (req, res) => {
   .find({ idTeacher: req.user._id })
   .exec((err, getCourses) => {
     if (err) return res.status(500).json({ err })
-
+    console.log(getCourses)
     res.render('teacher/courses', {
       title: 'Ver cursos asignados',
       cursos: getCourses
