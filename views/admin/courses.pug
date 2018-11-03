@@ -18,6 +18,7 @@ block content
             th(scope='col') E.A.P
             th(scope='col') Ciclo
             th(scope='col') Imagen
+            th(scope='col') Id chatbot
             th(scope='col') 
         tbody
           each curso, index in cursos
@@ -31,5 +32,6 @@ block content
               td #{curso.cycle}
               td
                 img.img-responsive(src=curso.image, class='profile', width='100', height='100')
+              td #{curso.idChatbot}
               td 
                 a.btn.btn-primary(href=`/admin/cursos/${curso._id}`, role='button') Ver más

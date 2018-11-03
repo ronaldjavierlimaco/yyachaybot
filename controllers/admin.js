@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
 const Course = require('../models/Course');
+const Chatbot = require('../models/Chatbot');
 
 exports.home = (req, res) => {
   res.render('home', {
@@ -186,11 +187,15 @@ exports.postCreateCourse = (req, res) => {
       course: createCourse._id
     })
     newChatbot.save((err, savedChatbot) => {
-      console.log(savedChatbot)
       if (err) return res.status(500).json({ err })
-        
-      req.flash('success', { msg: `El curso ha sido creado` });
-      res.redirect('/admin/cursos');
+      
+      newCourse.idChatbot = savedChatbot._id
+      newCourse.save((err) => {
+        if (err) return res.status(500).json({ err })
+
+        req.flash('success', { msg: `El curso ha sido creado` });
+        res.redirect('/admin/cursos');
+      })
     })
   })
 }

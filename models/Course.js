@@ -9,7 +9,8 @@ const courseSchema = new mongoose.Schema({
   description: String,
   image: String,
   idTeacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  idCreatorAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
+  idCreatorAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  idChatbot: {type: mongoose.Schema.Types.ObjectId, ref: 'Chatbot'}
 
 }, { timestamps: true });
 
