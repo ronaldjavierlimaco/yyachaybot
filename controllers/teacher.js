@@ -55,6 +55,7 @@ exports.getCourse = (req, res) => {
 
     Group
     .find({ idCourse: course._id })
+    .populate('students')
     .exec((err, getGroups) => {
       if (err) return res.status(500).json({ err })
       console.log(getGroups)
