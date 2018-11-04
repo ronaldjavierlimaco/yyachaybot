@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
 
   profile: {
     gender: String,
-    photo: String
+    photo: {type: String, default: 'https://articles-images.sftcdn.net/wp-content/uploads/sites/3/2016/01/wallpaper-for-facebook-profile-photo.jpg'}
   }
 }, { timestamps: true });
 

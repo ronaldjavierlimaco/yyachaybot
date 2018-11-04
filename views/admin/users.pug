@@ -2,10 +2,13 @@ extends ../layout
 
 block content
   .container
+    br
     h1.text-center Lista de Usuarios
     hr
-    .col-sm-4
-      a.btn.btn-success(href='/admin/usuario/crear', role='button') Crear Usuario
+    .col-sm-12
+      .text-center
+        a.btn.btn-success.btn-lg(href='/admin/usuario/crear', role='button') Crear Usuario
+    br
     .table-responsive.tamTabla
       table.table.table-striped.table-hover
         thead.bg-primary
@@ -15,7 +18,6 @@ block content
             th(scope='col') Apellidos
             th(scope='col') Email
             th(scope='col') Foto 
-            th(scope='col') Perfil de Aprendizaje Predominante
             th(scope='col') Tipo de Usuario
             th(scope='col') 
         tbody
@@ -25,9 +27,12 @@ block content
               td #{usuario.names}
               td #{usuario.surnames}
               td #{usuario.email}
-              td
-                img.img-responsive(src=usuario.profile.photo, class='profile', width='100', height='100')
-              td ...
+              if usuario.profile.photo
+                td
+                  img.rounded(src=usuario.profile.photo, class='profile', width='100', height='100')
+              else
+                td
+                  img.rounded(src=usuario.gravatar(100))     
               if usuario.type == 1
                 td Administrador
               else if usuario.type == 2

@@ -3,60 +3,65 @@ extends ../layout
 block content
   .container
     .page-header
-      h3 Editar usuario
-
+      .text-center
+        br
+        h3 Editar usuario
+    br
     form.form-horizontal(action=`/admin/usuarios/${usuario._id}/editar`, method='POST')
       input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        label.col-sm-3.control-label(for='name') Nombres
+      .row
         .col-sm-7
-          input.form-control(type='text', name='names', id='name', value=usuario.names)
-      .form-group
-        label.col-sm-3.control-label(for='name') Apellidos
-        .col-sm-7
-          input.form-control(type='text', name='surnames', id='name', value=usuario.surnames)    
-      .form-group
-        label.col-sm-3.control-label(for='email') Email
-        .col-sm-7
-          input.form-control(type='email', name='email', id='email', value=usuario.email)
-           
-      .form-group
-        label.col-sm-3.control-label(for='website') Tipo de usuario
-        .col-sm-7
-          select.custom-select(name='type' value=usuario.type)
-            if usuario.type == 1
-              option(selected='' disabled) Administrador
-              option(value='2') Alumno
-              option(value='3') Profesor
-            if usuario.type == 2
-              option(selected='' disabled) Alumno
-              option(value='1') Administrador
-              option(value='3') Profesor
-            if usuario.type == 3
-              option(selected='' disabled) Profesor
-              option(value='1') Administrador
-              option(value='2') Alumno
-      .form-group
-        .col-sm-offset-3.col-sm-4
-          button.btn.btn.btn-primary(type='submit')
-            i.fa.fa-pencil
-            | Guardar 
+          .form-group
+            label.col-sm-12.control-label(for='name') Nombres
+            .col-sm-12
+              input.form-control(type='text', name='names', id='name', value=usuario.names)
+          .form-group
+            label.col-sm-12.control-label(for='name') Apellidos
+            .col-sm-12
+              input.form-control(type='text', name='surnames', id='name', value=usuario.surnames)    
+          .form-group
+            label.col-sm-12.control-label(for='email') Email
+            .col-sm-12
+              input.form-control(type='email', name='email', id='email', value=usuario.email)
+               
+          .form-group
+            label.col-sm-12.control-label(for='website') Tipo de usuario
+            .col-sm-12
+              select.custom-select(name='type' value=usuario.type)
+                if usuario.type == 1
+                  option(selected='' disabled) Administrador
+                  option(value='2') Alumno
+                  option(value='3') Profesor
+                if usuario.type == 2
+                  option(selected='' disabled) Alumno
+                  option(value='1') Administrador
+                  option(value='3') Profesor
+                if usuario.type == 3
+                  option(selected='' disabled) Profesor
+                  option(value='1') Administrador
+                  option(value='2') Alumno
+          .form-group
+            .col-sm-offset-3.col-sm-4
+              button.btn.btn.btn-primary(type='submit')
+                i.fa.fa-pencil
+                | Guardar 
+        .col-sm-5
+          br
+          .page-header
+            h4 Cambiar contraseña
 
-    .page-header
-      h3 Cambiar contraseña
-
-    form.form-horizontal(action=`/admin/usuarios/${usuario._id}/contrasenia`, method='POST')
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        label.col-sm-3.control-label(for='password') Nueva contraseña
-        .col-sm-7
-          input.form-control(type='password', name='password', id='password')
-      .form-group
-        label.col-sm-3.control-label(for='confirmPassword') Confirmar contraseña
-        .col-sm-7
-          input.form-control(type='password', name='confirmPassword', id='confirmPassword')
-      .form-group
-        .col-sm-offset-3.col-sm-4
-          button.btn.btn-primary(type='submit')
-            i.fa.fa-lock
-            | Cambiar contraseña
+          form.form-horizontal(action=`/admin/usuarios/${usuario._id}/contrasenia`, method='POST')
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+              label.col-sm-12.control-label(for='password') Nueva contraseña
+              .col-sm-12
+                input.form-control(type='password', name='password', id='password')
+            .form-group
+              label.col-sm-12.control-label(for='confirmPassword') Confirmar contraseña
+              .col-sm-12
+                input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+            .form-group
+              .col-sm-offset-3.col-sm-4
+                button.btn.btn-primary(type='submit')
+                  i.fa.fa-lock
+                  | Cambiar contraseña

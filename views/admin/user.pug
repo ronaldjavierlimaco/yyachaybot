@@ -4,76 +4,47 @@ extends ../layout
 block content
   .container
     .page-header
-      h3 Detalle de usuario
-
-    .form-group
-      label.col-sm-3.control-label(for='name') Nombres
-      .col-sm-7
-        input.form-control(type='text', name='names', id='name', value=usuario.names readonly)
-    .form-group
-      label.col-sm-3.control-label(for='name') Apellidos
-      .col-sm-7
-        input.form-control(type='text', name='surnames', id='name', value=usuario.surnames readonly)    
-    .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
-        input.form-control(type='email', name='email', id='email', value=usuario.email readonly)
-    .form-group
-      label.col-sm-3.control-label Género
-      .col-sm-6
-        label.radio.col-sm-3
-          input(type='radio', checked=usuario.profile.gender=='M', name='gender', value='M', data-toggle='radio' disabled)
-          span Masculino
-        label.radio.col-sm-3
-          input(type='radio', checked=usuario.profile.gender=='F', name='gender', value='F', data-toggle='radio' disabled)
-          span Femenino
-       
-    .form-group
-      label.col-sm-3.control-label(for='location') Perfiles de Aprendizaje y Puntaje
-      .row
-        .col-sm-4
-          input.form-control(type='text', name='location', id='location', value='' readonly)
-        .col-sm-4
-          input.form-control(type='text', name='location', id='location', value='' readonly)  
-      .row
-        .col-sm-4
-          input.form-control(type='text', name='location', id='location', value='' readonly)
-        .col-sm-4
-          input.form-control(type='text', name='location', id='location', value='' readonly)     
-    .form-group
-      label.col-sm-3.control-label(for='website') Tipo de usuario
-      .col-sm-7
-        if usuario.type == 2
-          input.form-control(type='text', name='type', id='', value='Alumno' readonly)
-        if usuario.type == 3
-          input.form-control(type='text', name='type', id='', value='Profesor' readonly)  
-    .form-group
-      label.col-sm-3.control-label Imagen de Perfil
-      .col-sm-4
-        if !usuario.profile.photo
-          img(src=usuario.gravatar(), class='profile', width='100', height='100')
-        else  
-          img(src=usuario.profile.photo, class='profile', width='100', height='100')
-    .form-group
-      .col-sm-offset-3.col-sm-4
+      .text-center
+        br
+        h3 Detalle de usuario
         a.btn.btn-primary(href=`/admin/usuarios/${usuario._id}/editar`, role='button') Editar Usuario
-
-
-    //- .page-header
-    //-   h3 Change Password
-
-    //- form.form-horizontal(action='/account/password', method='POST')
-    //-   input(type='hidden', name='_csrf', value=_csrf)
-    //-   .form-group
-    //-     label.col-sm-3.control-label(for='password') New Password
-    //-     .col-sm-7
-    //-       input.form-control(type='password', name='password', id='password')
-    //-   .form-group
-    //-     label.col-sm-3.control-label(for='confirmPassword') Confirm Password
-    //-     .col-sm-7
-    //-       input.form-control(type='password', name='confirmPassword', id='confirmPassword')
-    //-   .form-group
-    //-     .col-sm-offset-3.col-sm-4
-    //-       button.btn.btn-primary(type='submit')
-    //-         i.fa.fa-lock
-    //-         | Change Password
+    br
+    .row
+      .col-sm-7
+        .form-group
+          label.col-sm-12.control-label(for='name') Nombres
+          .col-sm-12
+            input.form-control(type='text', name='names', id='name', value=usuario.names readonly)
+        .form-group
+          label.col-sm-12.control-label(for='name') Apellidos
+          .col-sm-12
+            input.form-control(type='text', name='surnames', id='name', value=usuario.surnames readonly)    
+        .form-group
+          label.col-sm-12.control-label(for='email') Email
+          .col-sm-12
+            input.form-control(type='email', name='email', id='email', value=usuario.email readonly)
+        .form-group
+          label.col-sm-12.control-label Género
+          .col-sm-6
+            label.radio.col-sm-6
+              input(type='radio', checked=usuario.profile.gender=='M', name='gender', value='M', data-toggle='radio' disabled)
+              span Masculino
+            label.radio.col-sm-6
+              input(type='radio', checked=usuario.profile.gender=='F', name='gender', value='F', data-toggle='radio' disabled)
+              span Femenino
+        .form-group
+          label.col-sm-3.control-label(for='website') Tipo de usuario
+          .col-sm-12
+            if usuario.type == 2
+              input.form-control(type='text', name='type', id='', value='Alumno' readonly)
+            if usuario.type == 3
+              input.form-control(type='text', name='type', id='', value='Profesor' readonly)  
+      .col-sm-5
+        .form-group
+          br
+          .text-center
+            if !usuario.profile.photo
+              img.rounded(src=usuario.gravatar(100),  width='350', height='400')
+            else  
+              img.rounded(src=usuario.profile.photo, alt='Responsive image', width='350', height='400')
+            label.col-sm-12.control-label Imagen de Perfil

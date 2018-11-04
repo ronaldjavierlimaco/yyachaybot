@@ -1,4 +1,5 @@
 
+
 const mongoose = require('mongoose');
 
 const chatbotSchema = new mongoose.Schema({
@@ -8,7 +9,8 @@ const chatbotSchema = new mongoose.Schema({
   intentions: [String],
   entities: [String],
   creatorTeacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' }
+  course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+  photo: {type: String, default: 'https://cdn-images-1.medium.com/max/1200/1*QVnVYYqQ6Wx4B74kOM-VFQ.png'}
 
 }, { timestamps: true });
 

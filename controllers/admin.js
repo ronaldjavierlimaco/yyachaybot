@@ -6,6 +6,7 @@ const passport = require('passport');
 const User = require('../models/User');
 const Course = require('../models/Course');
 const Chatbot = require('../models/Chatbot');
+const Enrollment = require('../models/Enrollment');
 
 exports.home = (req, res) => {
   res.render('home', {
@@ -203,12 +204,20 @@ exports.postCreateCourse = (req, res) => {
 exports.getCourse = (req, res) => {
   Course
   .findById(req.params.id)
-  .populate('idTeacher')
+  .populate('idTeacher idChatbot')
   .exec((err, getCourse) => {
     if (err) return res.status(500).json({ err })
-    console.log(getCourse)
-    res.render('admin/course', {
-      curso: getCourse
+
+    Enrollment
+    .find({ idCourse: getCourse._id })
+    .populate('idStudent')
+    .exec((err, students) => {
+      if (err) return res.status(500).json({ err })
+      res.render('admin/course', {
+        title: 'Ver curso',
+        curso: getCourse,
+        estudiantes: students
+      })
     })
   })
 }
