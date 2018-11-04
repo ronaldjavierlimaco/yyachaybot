@@ -22,9 +22,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
           a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             if user.profile.photo
               center
-                img(src=user.profile.photo width='60', height='60') 
+                img.rounded(src=user.profile.photo width='60', height='60') 
             else
-              img(src=user.gravatar(60))
+              img.rounded(src=user.gravatar(60))
             span   #{user.names}
             i.caret
           ul.dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
