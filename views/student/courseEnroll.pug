@@ -1,0 +1,88 @@
+
+
+extends ../layout
+
+block content
+  .container
+    .text-center
+      h1 Curso - #{curso.title}
+      if curso.idChatbot
+        h3 Chatbot
+        img.rounded(src=curso.idChatbot.photo, width='80', height='80') 
+        a.btn.btn-primary(href=`/alumno/cursosmatriculados/chatbot/${curso.idChatbot._id}`, role='button') Conversar
+    hr
+    .row
+      .col-sm-7
+        .form-group
+          label.col-sm-12.control-label(for='name') Titulo 
+          .col-sm-12
+            input.form-control(type='text', name='title', id='name', value=curso.title readonly)
+        .form-group
+          label.col-sm-12.control-label(for='name') E.A.P
+          .col-sm-12
+            if curso.eap == 1
+              input.form-control(type='text', name='eap', id='name', value='Ingeniería de Sistemas' readonly)   
+            else
+              input.form-control(type='text', name='eap', id='name', value='Ingeniería de Software' readonly)      
+        .form-group
+          label.col-sm-12.control-label(for='email') Ciclo
+          .col-sm-12
+            input.form-control(type='text', name='cycke', id='email', value=curso.cycle readonly)
+        .form-group 
+          label.col-sm-12.control-label(for='email') Descripcion
+          .col-sm-12
+            textarea#exampleFormControlTextarea1.form-control(rows='3' name='description' disabled) #{curso.description}
+
+      .col-sm-5
+        .form-group
+          label.col-sm-12.control-label(for='email') Profesor asignado
+          - var profe = curso.idTeacher.names +' '+ curso.idTeacher.surnames
+          .col-sm-12
+            input.form-control(type='text', name='cycke', id='email', value=profe readonly)
+        .form-group
+          label.col-sm-12.control-label Imagen del curso
+          .col-sm-12
+            .text-center
+              img.rounded(src=curso.image, class='profile', width='250', height='250')
+
+    br
+    br
+    .page-header
+      //h2.text-center Lista de Grupos
+      hr
+      br
+      h4.text-center Grupo - #{grupo.title}
+      br
+      .row
+        .col-sm-5
+          .form-group
+            label.col-sm-12.control-label(for='name') Titulo 
+            .col-sm-12
+              input.form-control(type='text', name='title', id='name', value=grupo.title readonly)
+          .form-group
+            label.col-sm-12.control-label(for='name') Descripción 
+            .col-sm-12
+              textarea#exampleFormControlTextarea1.form-control(rows='3' name='description' disabled) #{grupo.description}
+        .col-sm-7
+          .form-group    
+            .label.col-sm-6.control-label(for='name') Lista de Alumnos
+            if grupo.students.length > 0
+              .table-responsive.tamTabla
+                table.table.table-striped.table-hover
+                  thead.bg-primary
+                    tr
+                      th(scope='col') #
+                      th(scope='col') Nombres
+                      th(scope='col') Apellidos
+                      th(scope='col') Foto de Perfil
+                  tbody
+                    each alumno, index in grupo.students
+                      tr
+                        th(scope='row') #{index + 1}
+                        td #{alumno.names}
+                        td #{alumno.surnames}
+                        td 
+                          img.rounded(src=alumno.profile.photo, class='profile', width='100', height='100')
+            else
+              br
+              h4.text-center No hay alumnos matriculados en este grupo

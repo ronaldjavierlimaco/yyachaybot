@@ -57,8 +57,14 @@ router.get('/chatbots/', teacherController.getChatbots);
 
 router.get('/chatbots/:id', teacherController.getChatbot);
 
+router.get('/chatbots/:id/intencion/crear', teacherController.getCreateIntention);
+router.post('/chatbots/:id/intencion/crear',  uploadMultiple('archivo'), teacherController.postCreateIntention);
+
 router.get('/chatbots/:id/editar', teacherController.getUpdateChatbot);
 router.post('/chatbots/:id/editar', uploadMultiple('archivo'), teacherController.postUpdateChatbot);
+
+router.get('/chatbots/:id/editar/informacion', teacherController.getUpdateChatbotInfo);
+router.post('/chatbots/:id/editar/informacion', teacherController.postUpdateChatbotInfo);
 
 router.get('/chatbot/crear', teacherController.getCreateChatbot);
 router.post('/chatbot/crear', teacherController.postCreateChatbot);

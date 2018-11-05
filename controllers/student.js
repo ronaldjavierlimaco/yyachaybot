@@ -6,6 +6,7 @@ const User = require('../models/User');
 const Course = require('../models/Course');
 const Group = require('../models/Group')
 const Enrollment = require('../models/Enrollment');
+const Chatbot = require('../models/Chatbot');
 
 exports.home = (req, res) => {
   res.render('home', {
@@ -30,7 +31,7 @@ exports.getCourses = (req, res) => {
 exports.getCourse = (req, res) => {
   Course
   .findById(req.params.id)
-  .populate('idTeacher')
+  .populate('idTeacher idChatbot')
   .exec((err, course) => {
     if (err) return res.status(500).json({ err })
 
@@ -102,6 +103,48 @@ exports.coursesEnrollment = (req, res) => {
     res.render('student/coursesEnroll', {
       title: 'Ver cursos matriculados',
       cursos: course
+    })
+  })
+}
+
+exports.getCourseEnroll = (req, res) => {
+  Course
+  .findById(req.params.id)
+  .populate('idTeacher idChatbot')
+  .exec((err, course) => {
+    console.log(course)
+    if (err) return res.status(500).json({ err })
+    
+    Enrollment
+    .findOne({ idStudent: req.user._id, idCourse: course._id })
+    .exec((err, enroll) => {
+      if (err) return res.status(500).json({ err })
+      
+      Group
+      .findById(enroll.idGroup)
+      .populate('students')
+      .exec((err, group) => {
+        if (err) return res.status(500).json({ err })
+
+        res.render('student/courseEnroll', {
+          title: 'Ver Curso',
+          curso: course,
+          grupo: group,
+          matricula: enroll
+        })
+      })
+    })  
+  })
+}
+
+exports.coursesEnrollChatbot = (req, res) => {
+  Chatbot
+  .findById(req.params.id)
+  .exec((err, chatbot) => {
+    if (err) return res.status(500).json({ err })
+    res.render('student/courseEnrollChatbot', {
+      title: 'Conversando con el chatbot',
+      chatbot
     })
   })
 }

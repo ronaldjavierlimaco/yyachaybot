@@ -1,0 +1,27 @@
+
+extends ../layout
+
+block content
+  .container
+    .page-header
+      h1.text-center Editar chatbot - #{chatbot.name}
+    hr
+    form.form-horizontal(action=`/profesor/chatbots/${chatbot._id}/editar/informacion` method='POST')
+      .row
+        .col-sm-6
+          .form-group
+            label.col-sm-12.control-label(for='name') Nombre
+            .col-sm-12
+              input.form-control(type='text', name='name' value=chatbot.name)
+        .col-sm-6
+          .form-group
+            label.col-sm-12.control-label(for='name') Descripción 
+            .col-sm-12
+              textarea#exampleFormControlTextarea1.form-control(rows='3' name='description') #{chatbot.description} 
+
+      hr  
+      .form-group
+        .col-sm-offset-3.col-sm-7
+          button.btn.btn-success(type='submit')
+            i.fa.fa-user-plus
+            | Editar chatbot

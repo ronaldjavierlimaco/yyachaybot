@@ -3,8 +3,47 @@
 extends ../layout
 
 block content
+  //- .container
+  //-   h1.text-center Detalle chatbot
+  //-   hr
+  //-   .center
+  //-     iframe(height='950', width='500', src='https://bot.dialogflow.com/48eaed75-b2c1-443c-9c42-0da863084e89')
   .container
-    h1.text-center Detalle chatbot
+    .page-header
+      .text-center
+        h1 Chatbot - #{chatbot.name}
+        a.btn.btn-primary(href=`/profesor/chatbots/${chatbot._id}/editar/informacion`, role='button') Editar info
     hr
-    .center
-      iframe(height='950', width='500', src='https://bot.dialogflow.com/48eaed75-b2c1-443c-9c42-0da863084e89')
+    .row
+      .col-sm-6
+        .form-group
+          label.col-sm-12.control-label(for='name') Nombre
+          .col-sm-12
+            input.form-control(type='text', name='name' value=chatbot.name readonly)
+      .col-sm-6
+        .form-group
+          label.col-sm-12.control-label(for='name') Descripción 
+          .col-sm-12
+            textarea#exampleFormControlTextarea1.form-control(rows='3' name='description' readonly) #{chatbot.description}
+    hr
+
+    br
+    .page-header
+      .text-center
+        h3 Lista de Intenciones
+        a.btn.btn-primary(href=`/profesor/chatbots/${chatbot._id}/intencion/crear`, role='button') Crear intención
+      br
+      .table-responsive.tamTabla
+        table.table.table-striped.table-hover
+          thead.bg-primary
+            tr
+              th(scope='col') #
+              th(scope='col') Id
+              th(scope='col') Nombre
+          tbody
+            each intencion, index in intenciones
+              tr
+                th(scope='row') #{index + 1}
+                td #{intencion.idI}
+                td #{intencion.displayName}
+                

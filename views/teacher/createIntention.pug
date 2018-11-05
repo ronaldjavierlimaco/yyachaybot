@@ -1,0 +1,52 @@
+
+
+
+extends ../layout
+
+block content
+  .container
+    .page-header
+      h1.text-center Crear Intención
+    hr
+    form.form-horizontal(action=`/profesor/chatbots/${chatbot._id}/intencion/crear` method='POST' enctype="multipart/form-data")
+      .form-group
+        label.col-sm-3.control-label(for='name') Nombre de la intención
+        .col-sm-7
+          input.form-control(type='text', name='nombreIntencion' required)
+      hr
+      .form-group
+        label.col-sm-3.control-label(for='name') Pregunta(s)
+
+        .col-sm-7
+          .input-group.mb-3
+            textarea.form-control(rows='1' name='preguntas[]' required)
+            .input-group-append
+              button#button-addon2.btn.btn-primary(type='button' onclick="education_fields();")
+                span
+                  i.fas.fa-plus
+        #education_fields
+        br
+        .clear
+
+      hr   
+      .form-group
+        label.col-sm-3.control-label(for='name') Respuesta(s)
+
+        .col-sm-7
+          .input-group.mb-3
+            textarea.form-control(rows='1' name='respuestas[]' required)
+            .input-group-append
+              button#button-addon2.btn.btn-primary(type='button' onclick="education_fields2();")
+                span
+                  i.fas.fa-plus
+            input#exampleFormControlFile1.form-control-file(type='file' name='archivo')
+        #education_fields2
+        br
+        .clear
+
+      hr  
+      .form-group
+        .col-sm-offset-3.col-sm-7
+          button.btn.btn-success(type='submit')
+            i.fa.fa-user-plus
+            | Editar chatbot
