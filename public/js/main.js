@@ -36,7 +36,7 @@ function education_fields2() {
   var divtest2 = document.createElement("div");
 	divtest2.setAttribute("class", "input-group mb-3 removeclass"+room2);
 	var rdiv = 'removeclass'+room2;
-    divtest2.innerHTML = '<div class="col-sm-7"><div class="input-group mb-3"><textarea class="form-control" rows="5" name="respuestas[]"></textarea><div class="input-group-append"><button class="btn btn-danger" id="button-addon2" type="button" onclick="remove_education_fields2('+ room2 +');"><span><i class="fas fa-times"></i></span></button></div><input class="form-control-file" id="exampleFormControlFile1" type="file" /></div></div><br /><div class="clear"></div>';
+    divtest2.innerHTML = '<div class="col-sm-7"><div class="input-group mb-3"><textarea class="form-control" rows="5" name="respuestas[]"></textarea><div class="input-group-append"><button class="btn btn-danger" id="button-addon2" type="button" onclick="remove_education_fields2('+ room2 +');"><span><i class="fas fa-times"></i></span></button></div><input class="form-control-file" id="exampleFormControlFile1" type="file" name="archivo"/></div></div><br /><div class="clear"></div>';
     
     objTo2.appendChild(divtest2)
 }
