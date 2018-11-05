@@ -1,0 +1,64 @@
+
+
+
+
+extends ../layout
+
+block content
+  .container
+    .page-header
+      h1.text-center Editar Intención
+    hr
+    form.form-horizontal(action=`/profesor/chatbots/${chatbot._id}/intencion/${intencion.idI}/editar` method='POST')
+      input(type='hidden' name='idI' value=intencion.idI)
+      .form-group
+        label.col-sm-3.control-label(for='name') Nombre de la intención
+        .col-sm-7
+          input.form-control(type='text', name='nombreIntencion' value=intencion.displayName required)
+      hr
+      each pregunta, index in intencion.preguntas
+        .form-group
+          label.col-sm-3.control-label(for='name') Pregunta #{index + 1}
+
+          .col-sm-7
+            .input-group.mb-3
+              textarea.form-control(rows='1' name='preguntas[]') #{pregunta.parts[0].text}
+              .input-group-append
+                button#button-addon2.btn.btn-primary(type='button' onclick="education_fields();")
+                  span
+                    i.fas.fa-plus
+          #education_fields
+          br
+          .clear
+
+      hr   
+      each respuesta, index in intencion.respuestas[0].text.text
+        .form-group
+          label.col-sm-3.control-label(for='name') Respuesta #{index + 1}
+
+          .col-sm-7
+            .input-group.mb-3
+              -let archivo = respuesta.split('\n\n Archivo: ')
+              textarea.form-control(rows='1' name='respuestas[]') #{archivo[0]}
+              input(type='hidden' name='archivoCreado' value=archivo[1])
+              //.input-group-append
+                button#button-addon2.btn.btn-primary(type='button' onclick="education_fields2();")
+                  span
+                    i.fas.fa-plus
+              //input#exampleFormControlFile1.form-control-file(type='file' name='archivo')
+          .col-sm-12
+            if archivo[1]
+              p 
+              | Link archivo: 
+              a(href=archivo[1]) #{archivo[1]}
+          //- br
+          //- #education_fields2
+          //- br
+          //- .clear
+
+      hr  
+      .form-group
+        .col-sm-offset-3.col-sm-7
+          button.btn.btn-success(type='submit')
+            i.fa.fa-user-plus
+            | Editar intención

@@ -161,6 +161,7 @@ exports.getChatbot = (req, res) => {
     intentsClient
       .listIntents(request)
       .then(responses => {
+        console.log(responses[0])
         responses[0].forEach(intent => {
           chatbot.intentions.forEach(id => {
             if (intent.name.split('/')[4] == id) {
@@ -170,13 +171,7 @@ exports.getChatbot = (req, res) => {
               })
             }
           })
-          // console.log('====================');
-          // console.log(`id: ${intent.name.split('/')[4]}`);
-          // console.log(`Nombre: ${intent.displayName}`);
-          // console.log(`preguntas: ${JSON.stringify(intent.trainingPhrases)}`)
-          // console.log(`respuestas: ${JSON.stringify(intent.messages)}`)
         });
-        console.log(intenciones)
         res.render('teacher/chatbot', {
           title: 'Detalle Chatbot',
           chatbot,
@@ -185,6 +180,7 @@ exports.getChatbot = (req, res) => {
       })
       .catch(err => {
         console.error('Error al enumerar intenciones:', err);
+        res.redirect('back');
       });
   })
 }
@@ -266,6 +262,7 @@ exports.postCreateChatbot = (req, res) => {
     })
     .catch(err => {
       console.error('ERROR:', err);
+      res.redirect('back');
     });
 }
 
@@ -358,6 +355,7 @@ exports.postUpdateChatbot = (req, res) => {
       })
       .catch(err => {
         console.error('ERROR:', err);
+        res.redirect('back');
       });
   }
   else {
@@ -404,9 +402,14 @@ exports.postCreateCourse = (req, res) => {
     newChatbot.save((err, savedChatbot) => {
       console.log(savedChatbot)
       if (err) return res.status(500).json({ err })
-        
-      req.flash('success', { msg: `El curso ha sido creado` });
-      res.redirect('/profesor/cursos');
+      
+      newCourse.idChatbot = savedChatbot._id
+      newCourse.save((err) => {
+        if (err) return res.status(500).json({ err })
+
+        req.flash('success', { msg: `El curso ha sido creado` });
+        res.redirect('/profesor/cursos');
+      })
     })
   })
 }
@@ -505,7 +508,7 @@ exports.postCreateIntention = (req, res) => {
   };
 
   // Create the intent
-  if (displayName) {usePushEach: true 
+  if (displayName) {
     intentsClient
       .createIntent(createIntentRequest)
       .then(responses => {
@@ -527,4 +530,149 @@ exports.postCreateIntention = (req, res) => {
         console.error('ERROR:', err);
       });
   }
+}
+
+exports.getUpdateIntention = (req, res) => {
+  const intentsClient = new dialogflow.IntentsClient(credentials);
+
+  const projectAgentPath = intentsClient.projectAgentPath(projectId, sessionId);
+
+  const request = {
+    parent: projectAgentPath,
+    intentView: 'INTENT_VIEW_FULL'
+  };
+  
+  let intencion = {};
+
+  Chatbot
+  .findById(req.params.id)
+  .exec((err, chatbot) => {
+    if (err) return res.status(500).json({ err })
+    intentsClient
+      .listIntents(request)
+      .then(responses => {
+        responses[0].forEach(intent => {
+          if (intent.name.split('/')[4] == req.params.idI) {
+            intencion.idI = intent.name.split('/')[4];
+            intencion.displayName = intent.displayName;
+            intencion.preguntas = JSON.parse(JSON.stringify(intent.trainingPhrases));
+            intencion.respuestas = JSON.parse(JSON.stringify(intent.messages));
+          }
+        });
+        console.log(intencion.respuestas[0].text.text)
+        res.render('teacher/updateIntention', {
+          title: 'Editar intención',
+          chatbot,
+          intencion
+        })
+      })
+      .catch(err => {
+        console.error('Error al enumerar intenciones:', err);
+        res.redirect('back');
+      });
+  })
+}
+
+exports.postUpdateIntention = (req, res) => {
+  const responses = req.body.respuestas;
+  const archivoCreado = req.body.archivoCreado;
+
+  const resFile = responses.map((r, f) => {
+    return r + '\n\n Archivo: ' + archivoCreado[f]
+  })
+
+  const intentId = req.params.idI
+  //return res.send(req.body);
+
+  Chatbot
+  .findById(req.params.id)
+  .exec((err, chatbot) => {
+    if (err) return res.status(500).json({ err })
+
+    var intenciones = chatbot.intentions
+    intenciones.splice(intenciones.indexOf(intentId), 1)
+
+    chatbot.save((err) => {
+      if (err) return res.status(500).json({ err })
+
+      const intentsClient = new dialogflow.IntentsClient(credentials);
+      const intentPath = intentsClient.intentPath(projectId, intentId);
+
+      const request = {name: intentPath};
+
+      intentsClient
+        .deleteIntent(request)
+        .then(respuesta => {
+          console.log(`La intencion ${intentPath} ha sido eliminada.`)
+
+          const agentPath = intentsClient.projectAgentPath(projectId, sessionId);
+
+          const displayName = req.body.nombreIntencion;
+          const trainingPhrasesParts = req.body.preguntas;
+          const messageTexts = resFile;
+          const trainingPhrases = [];
+
+          //creando las frases o preguntas para la intención y luego lo guardamos en el array
+          trainingPhrasesParts.forEach(trainingPhrasesPart => {
+            const part = {
+              text: trainingPhrasesPart,
+            };
+            const trainingPhrase = {
+              type: 'EXAMPLE',
+              parts: [part],
+            };
+            trainingPhrases.push(trainingPhrase);
+          });
+
+          //creando las respuesta para la intencion
+          const messageText = {
+            text: messageTexts,
+          };
+          const message = {
+            text: messageText,
+          };
+          
+          //definiendo el objeto intencion
+          const intent = {
+            displayName: displayName,
+            trainingPhrases: trainingPhrases,
+            messages: [message],
+          };
+
+          //definiendo el objeto para la creacion de la intencion
+          const createIntentRequest = {
+            parent: agentPath,
+            intent: intent,
+          };
+          
+          if (displayName) {
+            intentsClient
+              .createIntent(createIntentRequest)
+              .then(responses => {
+                Chatbot
+                .findById(chatbot._id)
+                .exec((err, chatbot2) => {
+                  if (err) return res.status(500).json({ err })
+                  chatbot2.intentions.push(responses[0].name.split('/')[4]);
+        
+                  chatbot2.save((err, editChatbot) => {
+                    console.log(editChatbot)
+                    if (err) return res.status(500).json({ err })
+                    req.flash('success', { msg: `Se ha actualizado la intención del chatbot correctamente.` });
+                    res.redirect('/profesor/chatbots/'+editChatbot._id)
+                  })
+                })
+              })
+              .catch(err => {
+                console.error('ERROR:', err);
+                res.redirect('back');
+              });
+          }
+        })
+        .catch(err => {
+          console.error(`Failed to delete intent ${intentPath}:`, err);
+          res.redirect('back');
+        });
+    })
+  })
 }

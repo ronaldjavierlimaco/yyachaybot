@@ -63,6 +63,9 @@ router.post('/chatbots/:id/intencion/crear',  uploadMultiple('archivo'), teacher
 router.get('/chatbots/:id/editar', teacherController.getUpdateChatbot);
 router.post('/chatbots/:id/editar', uploadMultiple('archivo'), teacherController.postUpdateChatbot);
 
+router.get('/chatbots/:id/intencion/:idI/editar', teacherController.getUpdateIntention);
+router.post('/chatbots/:id/intencion/:idI/editar', teacherController.postUpdateIntention);
+
 router.get('/chatbots/:id/editar/informacion', teacherController.getUpdateChatbotInfo);
 router.post('/chatbots/:id/editar/informacion', teacherController.postUpdateChatbotInfo);
 
