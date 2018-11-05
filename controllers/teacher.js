@@ -152,6 +152,8 @@ exports.getChatbots = (req, res) => {
   //   });
   Chatbot
   .find({ creatorTeacher: req.user._id })
+  .populate('course')
+  .sort({createdAt: -1})
   .exec((err, chatbots) => {
     console.log(chatbots)
     if (err) return res.status(500).json({ err })
@@ -185,45 +187,41 @@ exports.getCreateChatbot = (req, res) => {
 exports.postCreateChatbot = (req, res) => {
   
   const intentsClient = new dialogflow.IntentsClient(credentials);
-  
   const agentPath = intentsClient.projectAgentPath(projectId, sessionId);
 
-  const displayName = req.body.nombreIntencion
-
+  const displayName = req.body.nombreIntencion;
+  const trainingPhrasesParts = req.body.preguntas;
+  const messageTexts = req.body.respuestas;
   const trainingPhrases = [];
 
-  const trainingPhrasesParts = req.body.preguntas
-
-  const messageTexts = req.body.respuestas
-
+  //creando las frases o preguntas para la intención y luego lo guardamos en el array
   trainingPhrasesParts.forEach(trainingPhrasesPart => {
     const part = {
       text: trainingPhrasesPart,
     };
-
-    // Here we create a new training phrase for each provided part.
     const trainingPhrase = {
       type: 'EXAMPLE',
       parts: [part],
     };
-
     trainingPhrases.push(trainingPhrase);
   });
 
+  //creando las respuesta para la intencion
   const messageText = {
     text: messageTexts,
   };
-
   const message = {
     text: messageText,
   };
   
+  //definiendo el objeto intencion
   const intent = {
     displayName: displayName,
     trainingPhrases: trainingPhrases,
     messages: [message],
   };
 
+  //definiendo el objeto para la creacion de la intencion
   const createIntentRequest = {
     parent: agentPath,
     intent: intent,
@@ -233,8 +231,6 @@ exports.postCreateChatbot = (req, res) => {
   intentsClient
     .createIntent(createIntentRequest)
     .then(responses => {
-      console.log(`Intent ${responses[0].name} created`);
-
       const newChatbot = new Chatbot({
         name: req.body.name,
         description: req.body.description,
@@ -256,13 +252,112 @@ exports.postCreateChatbot = (req, res) => {
 }
 
 exports.getUpdateChatbot = (req, res) => {
-  res.render('teacher/updateChatbot', {
-    title: 'Actualizar chatbot'
+  Chatbot
+  .findById(req.params.id)
+  .populate('course')
+  .exec((err, chatbot) => {
+    if (err) return res.status(500).json({ err })
+    console.log(chatbot)
+    res.render('teacher/updateChatbot', {
+      title: 'Actualizar chatbot',
+      chatbot
+    })
   })
 }
 
 exports.postUpdateChatbot = (req, res) => {
-  return res.send(req.body)
+  const responses = req.body.respuestas;
+
+  const filesUrl = [];
+  req.files.map((f) => filesUrl.push(f.location));
+
+  const resFile = responses.map((r, f) => {
+    return r + '\n\n Archivo: ' + filesUrl[f]
+  })
+   
+  // return res.send(resFile);
+  const intentsClient = new dialogflow.IntentsClient(credentials);
+  const agentPath = intentsClient.projectAgentPath(projectId, sessionId);
+
+  const displayName = req.body.nombreIntencion;
+  const trainingPhrasesParts = req.body.preguntas;
+  const messageTexts = resFile;
+  const trainingPhrases = [];
+
+  //creando las frases o preguntas para la intención y luego lo guardamos en el array
+  trainingPhrasesParts.forEach(trainingPhrasesPart => {
+    const part = {
+      text: trainingPhrasesPart,
+    };
+    const trainingPhrase = {
+      type: 'EXAMPLE',
+      parts: [part],
+    };
+    trainingPhrases.push(trainingPhrase);
+  });
+
+  //creando las respuesta para la intencion
+  const messageText = {
+    text: messageTexts,
+  };
+  const message = {
+    text: messageText,
+  };
+  
+  //definiendo el objeto intencion
+  const intent = {
+    displayName: displayName,
+    trainingPhrases: trainingPhrases,
+    messages: [message],
+  };
+
+  //definiendo el objeto para la creacion de la intencion
+  const createIntentRequest = {
+    parent: agentPath,
+    intent: intent,
+  };
+
+  // Create the intent
+  if (displayName) {usePushEach: true 
+    intentsClient
+      .createIntent(createIntentRequest)
+      .then(responses => {
+        Chatbot
+        .findById(req.params.id)
+        .exec((err, chatbot) => {
+          if (err) return res.status(500).json({ err })
+          chatbot.name = req.body.name || chatbot.name;
+          chatbot.description = req.body.description || chatbot.description;
+          chatbot.intentions.push(responses[0].name.split('/')[4]);
+
+          chatbot.save((err, editChatbot) => {
+            console.log(editChatbot)
+            if (err) return res.status(500).json({ err })
+            req.flash('success', { msg: `El Chatbot ha sido actualizado` });
+            res.redirect('/profesor/chatbots')
+          })
+        })
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
+  }
+  else {
+    Chatbot
+    .findById(req.params.id)
+    .exec((err, chatbot) => {
+      if (err) return res.status(500).json({ err })
+      chatbot.name = req.body.name || chatbot.name;
+      chatbot.description = req.body.description || chatbot.description;
+      
+      chatbot.save((err, editChatbot) => {
+        console.log(editChatbot)
+        if (err) return res.status(500).json({ err })
+        req.flash('success', { msg: `El Chatbot ha sido actualizado` });
+        res.redirect('/profesor/chatbots')
+      })
+    })
+  }
 }
 
 exports.getCreateCourse = (req, res) => {
@@ -293,7 +388,7 @@ exports.postCreateCourse = (req, res) => {
       if (err) return res.status(500).json({ err })
         
       req.flash('success', { msg: `El curso ha sido creado` });
-      res.redirect('/admin/cursos');
+      res.redirect('/profesor/cursos');
     })
   })
 }

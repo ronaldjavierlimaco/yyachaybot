@@ -14,10 +14,7 @@ block content
       .jumbotron
         .container
           h1.display-3 Bienvenido a Chatbot e-learning
-          p
-            | 
-          //- p
-          //-   a.btn.btn-primary.btn-lg(href='#', role='button') Ver más »        
+          p      
       .container
         .row
           .col-md-4
@@ -32,21 +29,11 @@ block content
               | Aca se podrá ver todos los cursos del sistema.
             p
               a.btn.btn-secondary(href='/admin/cursos', role='button') Ver más »
-          //.col-md-4
-            h2 Gestión de Perfiles de Aprendizaje
-            p
-              | Aca podrá gestionar y ver los perfiles de aprendizaje.
-            p
-              a.btn.btn-secondary(href='', role='button') Ver más »      
-      hr
     else if user.type == 2
       .jumbotron
         .container
           h1.display-3 Bienvenido a Chatbot e-learning!
-          p
-            | 
-          //- p
-          //-   a.btn.btn-primary.btn-lg(href='#', role='button') Ver más »        
+               
       .container
         // Example row of columns
         .row
@@ -62,16 +49,12 @@ block content
               | 
             p
               a.btn.btn-secondary(href='/alumno/cursosmatriculados', role='button') Ver más »
-          
-      hr
+
     else if user.type == 3
       .jumbotron
         .container
           h1.display-3 Bienvenido a Chatbot e-learning!
-          p
-            | 
-          //- p
-          //-   a.btn.btn-primary.btn-lg(href='#', role='button') Ver más »        
+              
       .container
         // Example row of columns
         .row
@@ -87,5 +70,3 @@ block content
               | 
             p
               a.btn.btn-secondary(href='/profesor/chatbots', role='button') Ver más »
-          
-      hr

@@ -2,7 +2,6 @@
  * Module dependencies.
  */
 const express = require('express');
-const app = express();
 const compression = require('compression');
 const session = require('express-session');
 const bodyParser = require('body-parser');
@@ -21,8 +20,6 @@ const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
 const moment = require('moment');
-
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -47,8 +44,11 @@ moment.locale('es')
 const passportConfig = require('./config/passport');
 const config = require('./config/user');
 
+const app = express();
 
 app.locals.moment = moment;
+
+
 /**
  * Connect to MongoDB.
  */
@@ -88,15 +88,15 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use((req, res, next) => {
-	if (req.path === '/api/upload') {
-		next();
-	} else {
-		lusca.csrf()(req, res, next);
-	}
-});
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
+// app.use((req, res, next) => {
+// 	if (req.path === '/api/upload') {
+// 		next();
+// 	} else {
+// 		lusca.csrf()(req, res, next);
+// 	}
+// });
+// app.use(lusca.xframe('SAMEORIGIN'));
+// app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
 	res.locals.user = req.user;
 	next();

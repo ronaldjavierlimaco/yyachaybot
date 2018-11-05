@@ -2,7 +2,7 @@
 extends ../layout
 
 block content
-  .container
+  .container-fluid
     h1.text-center Lista de Chatbots
     hr
     .col-sm-12
@@ -16,8 +16,8 @@ block content
             th(scope='col') #
             th(scope='col') Nombre
             th(scope='col') Descripción
+            th(scope='col') Curso
             th(scope='col') Fecha de creación
-            th(scope='col') Aprendizaje predominante
             th(scope='col') 
         tbody
           each chatbot, index in chatbots
@@ -25,7 +25,11 @@ block content
               th(scope='row') #{index + 1}
               td #{chatbot.name}
               td #{chatbot.description}
+              td #{chatbot.course.title}
               td #{moment(chatbot.createdAt).format('L')}
-              td ...
-              td 
-                a.btn.btn-primary(href=`/profesor/chatbots/${chatbot._id}`, role='button') Ver más
+              if chatbot.name
+                td 
+                  a.btn.btn-primary(href=`/profesor/chatbots/${chatbot._id}`, role='button') Ver más
+              else   
+                td 
+                  a.btn.btn-primary(href=`/profesor/chatbots/${chatbot._id}/editar`, role='button') Editar
