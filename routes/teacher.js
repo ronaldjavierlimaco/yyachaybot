@@ -57,6 +57,8 @@ router.get('/chatbots/', teacherController.getChatbots);
 
 router.get('/chatbots/:id', teacherController.getChatbot);
 
+router.get('/chatbots/:id/conversar', teacherController.getChatbotChat);
+
 router.get('/chatbots/:id/intencion/crear', teacherController.getCreateIntention);
 router.post('/chatbots/:id/intencion/crear',  uploadMultiple('archivo'), teacherController.postCreateIntention);
 

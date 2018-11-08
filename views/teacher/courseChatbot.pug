@@ -1,0 +1,10 @@
+
+
+extends ../layout
+
+block content
+  .container
+    h1.text-center Chatear con #{chatbot.name}
+    hr
+    .center
+      iframe(height='950', width='500', src=`https://bot.dialogflow.com/${chatbot.credentials.projectId}`)
