@@ -11,9 +11,10 @@ const Chatbot = require('../models/Chatbot');
 const projectId = process.env.DFPROJECT_ID;
 const client_email = process.env.DFCLIENT_EMAIL;
 const private_key = process.env.DFPRIVATE_KEY;
+
 const sessionId = 'quickstart-session-id';
 
-var credentials = {
+const credentials = {
   credentials: {
     client_email,
     private_key

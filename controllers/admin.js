@@ -7,6 +7,7 @@ const User = require('../models/User');
 const Course = require('../models/Course');
 const Chatbot = require('../models/Chatbot');
 const Enrollment = require('../models/Enrollment');
+const CredentialsAgent = require('../models/CredentialsAgent');
 
 exports.home = (req, res) => {
   res.render('home', {
@@ -265,3 +266,18 @@ exports.postUpdateCourse = (req, res) => {
   })
 }
 
+exports.postCreateCredentialsAgent = (req, res) => {
+  const credentialsAgent = new CredentialsAgent({
+    projectId: req.body.projectId,
+    clientEmail: req.body.clientEmail,
+    privateKey: req.body.privateKey
+  })
+  credentialsAgent.save((err, agent) => {
+    if (err) return res.status(500).json({ err })
+    return res.status(201).json({
+      message: 'Credentials agente create',
+      agent
+    })
+  })
+  
+}

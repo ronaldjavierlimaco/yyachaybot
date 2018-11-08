@@ -28,5 +28,6 @@ router.post('/cursos/:id/editar', adminController.postUpdateCourse);
 router.get('/curso/crear', adminController.getCreateCourse);
 router.post('/curso/crear', adminController.postCreateCourse);
 
+router.post('/agente/credenciales/crear', adminController.postCreateCredentialsAgent);
 
 module.exports = router;

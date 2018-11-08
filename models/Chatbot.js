@@ -10,7 +10,13 @@ const chatbotSchema = new mongoose.Schema({
   entities: [String],
   creatorTeacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
-  photo: {type: String, default: 'https://cdn-images-1.medium.com/max/1200/1*QVnVYYqQ6Wx4B74kOM-VFQ.png'}
+  photo: {type: String, default: 'https://cdn-images-1.medium.com/max/1200/1*QVnVYYqQ6Wx4B74kOM-VFQ.png'},
+  
+  credentials: {
+    projectId: String,
+    clientEmail: String,
+    privateKey: String
+  }
 
 }, { timestamps: true, usePushEach: true });
 
