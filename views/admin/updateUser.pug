@@ -7,10 +7,10 @@ block content
         br
         h3 Editar usuario
     br
-    form.form-horizontal(action=`/admin/usuarios/${usuario._id}/editar`, method='POST')
-      input(type='hidden', name='_csrf', value=_csrf)
-      .row
-        .col-sm-7
+    .row
+      .col-sm-7
+        form.form-horizontal(action=`/admin/usuarios/${usuario._id}/editar`, method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
           .form-group
             label.col-sm-12.control-label(for='name') Nombres
             .col-sm-12
@@ -23,7 +23,7 @@ block content
             label.col-sm-12.control-label(for='email') Email
             .col-sm-12
               input.form-control(type='email', name='email', id='email', value=usuario.email)
-               
+              
           .form-group
             label.col-sm-12.control-label(for='website') Tipo de usuario
             .col-sm-12
@@ -45,23 +45,23 @@ block content
               button.btn.btn.btn-primary(type='submit')
                 i.fa.fa-pencil
                 | Guardar 
-        .col-sm-5
-          br
-          .page-header
-            h4 Cambiar contraseña
+      .col-sm-5
+        br
+        .page-header
+          h4 Cambiar contraseña
 
-          form.form-horizontal(action=`/admin/usuarios/${usuario._id}/contrasenia`, method='POST')
-            input(type='hidden', name='_csrf', value=_csrf)
-            .form-group
-              label.col-sm-12.control-label(for='password') Nueva contraseña
-              .col-sm-12
-                input.form-control(type='password', name='password', id='password')
-            .form-group
-              label.col-sm-12.control-label(for='confirmPassword') Confirmar contraseña
-              .col-sm-12
-                input.form-control(type='password', name='confirmPassword', id='confirmPassword')
-            .form-group
-              .col-sm-offset-3.col-sm-4
-                button.btn.btn-primary(type='submit')
-                  i.fa.fa-lock
-                  | Cambiar contraseña
+        form.form-horizontal(action=`/admin/usuarios/${usuario._id}/contrasenia`, method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          .form-group
+            label.col-sm-12.control-label(for='password') Nueva contraseña
+            .col-sm-12
+              input.form-control(type='password', name='password', id='password')
+          .form-group
+            label.col-sm-12.control-label(for='confirmPassword') Confirmar contraseña
+            .col-sm-12
+              input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+          .form-group
+            .col-sm-offset-3.col-sm-4
+              button.btn.btn-primary(type='submit')
+                i.fa.fa-lock
+                | Cambiar contraseña

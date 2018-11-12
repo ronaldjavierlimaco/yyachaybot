@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Course = require('../models/Course');
 const Group = require('../models/Group')
 const Chatbot = require('../models/Chatbot');
+const CredentialsAgent = require('../models/CredentialsAgent');
 
 // const projectId = process.env.DFPROJECT_ID;
 // const client_email = process.env.DFCLIENT_EMAIL;
@@ -396,33 +397,58 @@ exports.getCreateCourse = (req, res) => {
 
 exports.postCreateCourse = (req, res) => {
   // return res.send(req.body)
-  const newCourse = new Course ({
-    title: req.body.title,
-    eap: req.body.eap,
-    cycle: req.body.cycle,
-    description: req.body.description,
-    image: req.body.image,
-    idTeacher: req.body.idTeacher
-  })
-  newCourse.save((err, createCourse) => {
-    if (err) return res.status(500).json({ err })
+  CredentialsAgent
+  .find()
+  .exec((err, credential) => {
+    if (err) return res.status(500).json({err})
 
-    const newChatbot = new Chatbot({
-      creatorTeacher: createCourse.idTeacher,
-      course: createCourse._id
-    })
-    newChatbot.save((err, savedChatbot) => {
-      console.log(savedChatbot)
-      if (err) return res.status(500).json({ err })
+    if (credential.length > 0) {
 
-      newCourse.idChatbot = savedChatbot._id
-      newCourse.save((err) => {
-        if (err) return res.status(500).json({ err })
-
-        req.flash('success', { msg: `El curso ha sido creado` });
-        res.redirect('/profesor/cursos');
+      const newCourse = new Course ({
+        title: req.body.title,
+        eap: req.body.eap,
+        cycle: req.body.cycle,
+        description: req.body.description,
+        image: req.body.image,
+        idTeacher: req.body.idTeacher
       })
-    })
+      newCourse.save((err, createCourse) => {
+        if (err) return res.status(500).json({ err })
+    
+        const newChatbot = new Chatbot({
+          creatorTeacher: createCourse.idTeacher,
+          course: createCourse._id,
+          credentials: {
+            projectId: credential[0].projectId,
+            clientEmail: credential[0].clientEmail,
+            privateKey: credential[0].privateKey
+          }
+        })
+        newChatbot.save((err, savedChatbot) => {
+          console.log(savedChatbot)
+          if (err) return res.status(500).json({ err })
+    
+          newCourse.idChatbot = savedChatbot._id
+          newCourse.save((err) => {
+            if (err) return res.status(500).json({ err })
+            
+            CredentialsAgent
+            .findById(credential[0]._id)
+            .remove()
+            .exec((err) => {
+              if (err) return res.status(500).json({ err })
+              
+              req.flash('success', { msg: `El curso ha sido creado` });
+              res.redirect('/profesor/cursos');
+            })
+          })
+        })
+      })
+    }
+    else {
+      req.flash('success', { msg: `Ya no puede crear mas cursos, contactese con el administrador de la web` });
+      res.redirect('back')
+    }
   })
 }
 
