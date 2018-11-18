@@ -7,10 +7,34 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
     span.navbar-toggler-icon
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      //li.nav-item.active
-        a.nav-link(href='/')
-          | Inicio
-          span.sr-only (current)
+      if !user
+      else if user.type == 1
+        li.nav-item.active
+          a.nav-link(href='/admin/usuarios')
+            | Gestión de usuarios
+            span.sr-only (current)
+        li.nav-item.active
+          a.nav-link(href='/admin/cursos')
+            | Gestión de cursos
+            span.sr-only (current)
+      else if user.type == 2
+        li.nav-item.active
+          a.nav-link(href='/alumno/cursos')
+            | Cursos abiertos
+            span.sr-only (current)
+        li.nav-item.active
+          a.nav-link(href='/alumno/cursosmatriculados')
+            | Cursos matriculados
+            span.sr-only (current)
+      else
+        li.nav-item.active
+          a.nav-link(href='/profesor/cursos')
+            | Gestión de cursos asignados
+            span.sr-only (current)
+        li.nav-item.active
+          a.nav-link(href='/profesor/chatbots')
+            | Gestión de chatbots
+            span.sr-only (current)
     ul.navbar-nav.navbar-right
       if !user
         li.nav-item(class=(title == 'Login') ? 'active' : undefined)
