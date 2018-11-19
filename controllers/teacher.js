@@ -503,10 +503,16 @@ exports.postCreateIntention = (req, res) => {
     const responses = req.body.respuestas;
   
     const filesUrl = [];
-    req.files.map((f) => filesUrl.push(f.location));
-  
+    req.files.map((f) => {filesUrl.push(f.location)})
+
     const resFile = responses.map((r, f) => {
-      return r + '\n\n Archivo: ' + filesUrl[f]
+      
+      if (filesUrl[f] == undefined) {
+        return r + '\n\n Archivo: ' + ''
+      } 
+      else {
+        return r + '\n\n Archivo: ' + filesUrl[f]
+      }
     })
   
     const sessionId = 'quickstart-session-id';
