@@ -134,11 +134,11 @@ exports.getReset = (req, res, next) => {
     .exec((err, user) => {
       if (err) { return next(err); }
       if (!user) {
-        req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
-        return res.redirect('/forgot');
+        req.flash('errors', { msg: 'El token de restablecimiento de contraseña no es válido o ha caducado.' });
+        return res.redirect('/usuario/recuperarcontraseña');
       }
       res.render('account/reset', {
-        title: 'Password Reset'
+        title: 'Restablecimiento de contraseña'
       });
     });
 };
@@ -148,8 +148,8 @@ exports.getReset = (req, res, next) => {
  * Process the reset password request.
  */
 exports.postReset = (req, res, next) => {
-  req.assert('password', 'Password must be at least 4 characters long.').len(4);
-  req.assert('confirm', 'Passwords must match.').equals(req.body.password);
+  req.assert('password', 'La contraseña debe tener al menos 4 caracteres.').len(4);
+  req.assert('confirm', 'Las contraseñas deben coincidir.').equals(req.body.password);
 
   const errors = req.validationErrors();
 
@@ -166,7 +166,7 @@ exports.postReset = (req, res, next) => {
         .exec((err, user) => {
           if (err) { return next(err); }
           if (!user) {
-            req.flash('errors', { msg: 'Password reset token is invalid or has expired.' });
+            req.flash('errors', { msg: 'El token de restablecimiento de contraseña no es válido o ha caducado.' });
             return res.redirect('back');
           }
           user.password = req.body.password;
@@ -190,12 +190,12 @@ exports.postReset = (req, res, next) => {
       });
       const mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Your Hackathon Starter password has been changed',
-        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+        from: 'chatbotunmsm@gmail.com',
+        subject: 'Tu contraseña de Yachaybot ha sido cambiada',
+        text: `Hola,\n\n Esta es una confirmación de que la contraseña de su cuenta ${user.email} acaba de cambiarse.\n`
       };
       transporter.sendMail(mailOptions, (err) => {
-        req.flash('success', { msg: 'Success! Your password has been changed.' });
+        req.flash('success', { msg: '¡Genial! Tu contraseña ha sido cambiada.' });
         done(err);
       });
     }
@@ -223,14 +223,14 @@ exports.getForgot = (req, res) => {
  * Create a random token, then the send user an email with a reset link.
  */
 exports.postForgot = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
+  req.assert('email', 'Por favor, introduce una dirección de correo electrónico válida.').isEmail();
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
   const errors = req.validationErrors();
 
   if (errors) {
     req.flash('errors', errors);
-    return res.redirect('/forgot');
+    return res.redirect('back');
   }
 
   async.waterfall([
@@ -244,8 +244,8 @@ exports.postForgot = (req, res, next) => {
       User.findOne({ email: req.body.email }, (err, user) => {
         if (err) { return done(err); }
         if (!user) {
-          req.flash('errors', { msg: 'Account with that email address does not exist.' });
-          return res.redirect('/forgot');
+          req.flash('errors', { msg: 'No existe una cuenta con ese correo.' });
+          return res.redirect('back');
         }
         user.passwordResetToken = token;
         user.passwordResetExpires = Date.now() + 3600000; // 1 hour
@@ -264,20 +264,20 @@ exports.postForgot = (req, res, next) => {
       });
       const mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
-        text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
-          Please click on the following link, or paste this into your browser to complete the process:\n\n
-          http://${req.headers.host}/reset/${token}\n\n
-          If you did not request this, please ignore this email and your password will remain unchanged.\n`
+        from: 'chatbotunmsm@gmail.com',
+        subject: 'Reinicia tu contraseña en Yachaybot',
+        text: `Hola. Has recibido este correo porque solicitaste (o quizá alguien más lo hizo) reestablecer tu contraseña en Yachaybot.\n
+          Para esto, solo tienes que ingresar al siguiente Link: \n\n
+          http://${req.headers.host}/usuario/reiniciarcontrasena/${token}\n\n
+          Si tu no fuiste el que lo solicitó, no hagas nada y tu cuenta permanecerá segura.\n`
       };
       transporter.sendMail(mailOptions, (err) => {
-        req.flash('info', { msg: `An e-mail has been sent to ${user.email} with further instructions.` });
+        req.flash('info', { msg: `Se envió un correo a ${user.email} con las instrucciones para que pueda reestablecer su contraseña.` });
         done(err);
       });
     }
   ], (err) => {
     if (err) { return next(err); }
-    res.redirect('/forgot');
+    res.redirect('back');
   });
 };
