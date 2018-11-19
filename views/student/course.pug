@@ -39,7 +39,7 @@ block content
           label.col-sm-12.control-label Imagen del curso
           .col-sm-12
             .text-center
-              img.rounded(src=curso.image, class='profile', width='250', height='250')
+              .img-course-p.rounded(style=`background-image: url(${curso.image})`)
 
     br
     br
@@ -124,7 +124,7 @@ block content
                           td #{alumno.names}
                           td #{alumno.surnames}
                           td 
-                            img.rounded(src=alumno.profile.photo, class='profile', width='100', height='100')
+                            .img-user.rounded(style=`background-image: url(${alumno.profile.photo})`)
               else
                 br
                 h4.text-center No hay alumnos matriculados en este grupo
