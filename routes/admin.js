@@ -25,6 +25,8 @@ router.get('/cursos/:id', adminController.getCourse);
 router.get('/cursos/:id/editar', adminController.getUpdateCourse);
 router.post('/cursos/:id/editar', adminController.postUpdateCourse);
 
+router.post('/cursos/:id/eliminar', adminController.postDeleteCourse);
+
 router.get('/curso/crear', adminController.getCreateCourse);
 router.post('/curso/crear', adminController.postCreateCourse);
 

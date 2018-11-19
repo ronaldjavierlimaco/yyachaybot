@@ -1,13 +1,13 @@
 
-const bluebird = require('bluebird');
-const crypto = bluebird.promisifyAll(require('crypto'));
-const nodemailer = require('nodemailer');
-const passport = require('passport');
 const User = require('../models/User');
 const Course = require('../models/Course');
 const Chatbot = require('../models/Chatbot');
 const Enrollment = require('../models/Enrollment');
 const CredentialsAgent = require('../models/CredentialsAgent');
+const Group = require('../models/Group');
+
+// Instantiate a DialogFlow client.
+const dialogflow = require('dialogflow');
 
 exports.home = (req, res) => {
   res.render('home', {
@@ -288,6 +288,80 @@ exports.postUpdateCourse = (req, res) => {
       if (err) return res.status(500).json({ err })
       req.flash('success', { msg: 'El curso ha sido actualizado.' });
       res.redirect(`/admin/cursos/${editUser._id}`);
+    })
+  })
+}
+
+exports.postDeleteCourse = (req, res) => {
+  Chatbot
+  .findOne({ course: req.params.id })
+  .exec((err, bot) => {
+    if (err) return res.status(500).json({err})
+
+    const credentialsAgent = new CredentialsAgent({
+      projectId: bot.credentials.projectId,
+      clientEmail: bot.credentials.clientEmail,
+      privateKey: bot.credentials.privateKey
+    })
+    credentialsAgent.save((err) => {
+      if (err) return res.status(500).json({ err })
+
+      const projectId = bot.credentials.projectId;
+      const credentials = {
+        credentials: {
+          client_email: bot.credentials.clientEmail,
+          private_key: bot.credentials.privateKey
+        },
+        projectId: bot.credentials.projectId
+      }
+      const intentsClient = new dialogflow.IntentsClient(credentials);
+
+      bot.intentions.forEach(intent => {
+        const intentPath = intentsClient.intentPath(projectId, intent);
+        const request = {name: intentPath};
+  
+        intentsClient
+        .deleteIntent(request)
+        .then(respuesta => {
+          console.log(`La intencion ${intentPath} ha sido eliminada.`);
+  
+        })
+        .catch(err => {
+          console.error(`Error al eliminar la intención ${intentPath}:`, err);
+        });
+      });
+
+      Chatbot
+      .findOne({ course: req.params.id })
+      .remove()
+      .exec((err) => {
+        console.log('Entra acaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        if (err) return res.status(500).json({err})
+
+        Group
+        .findOne({ idCourse: req.params.id })
+        .remove()
+        .exec((err) => {
+          if (err) return res.status(500).json({err})
+
+          Enrollment
+          .findOne({ idCourse:req.params.id })
+          .remove()
+          .exec((err) => {
+            if (err) return res.status(500).json({err})
+
+            Course
+            .findById(req.params.id)
+            .remove()
+            .exec((err, course) => {
+              if (err) return res.status(500).json({err})
+
+              req.flash('success', { msg: `El curso ha sido eliminado.` });
+              res.redirect(`/admin/cursos`);
+            })
+          })
+        })
+      })
     })
   })
 }
