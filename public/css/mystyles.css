@@ -48,11 +48,16 @@ code {
 
 .img-user {
   background-position: center;
-  /* background-repeat: no-repeat; */
   background-size: cover;
-  /* position: relative; */
   width: 100px;
   height: 100px;
+}
+
+.img-user-d {
+  background-position: center;
+  background-size: cover;
+  width: 350px;
+  height: 400px;
 }
 
 .img-course {
@@ -69,6 +74,13 @@ code {
   position: relative;
   width: 250px;
   height: 250px;
+}
+
+.img-course-e {
+  background-position: center;
+  background-size: cover;
+  width: 250px;
+  height: 200px;
 }
 
 .img-user-h {

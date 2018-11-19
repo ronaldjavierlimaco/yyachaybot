@@ -46,5 +46,5 @@ block content
             if !usuario.profile.photo
               img.rounded(src=usuario.gravatar(100),  width='350', height='400')
             else  
-              img.rounded(src=usuario.profile.photo, alt='Responsive image', width='350', height='400')
+              .img-user-d.rounded(style=`background-image: url(${usuario.profile.photo})`)
             label.col-sm-12.control-label Imagen de Perfil
