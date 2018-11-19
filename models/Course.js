@@ -7,7 +7,7 @@ const courseSchema = new mongoose.Schema({
   eap: Number,
   cycle: Number,
   description: String,
-  image: String,
+  image: {type: String, default: 'https://image.freepik.com/vector-gratis/diferentes-elementos-colegio-estilo-pizarra_23-2147774585.jpg'},
   idTeacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   idCreatorAdmin: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   idChatbot: {type: mongoose.Schema.Types.ObjectId, ref: 'Chatbot'}

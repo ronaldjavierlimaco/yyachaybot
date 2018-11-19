@@ -46,7 +46,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
           a#navbarDropdownMenuLink.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
             if user.profile.photo
               center
-                img.rounded(src=user.profile.photo width='60', height='60') 
+                .img-user-h.rounded(style=`background-image: url(${user.profile.photo})`)
             else
               img.rounded(src=user.gravatar(60))
             span   #{user.names}

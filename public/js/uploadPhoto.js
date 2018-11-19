@@ -38,7 +38,7 @@ $('#uploadphoto').click((e) => {
     if(error) console.log(error);
     var id = result[0].public_id;
     console.log('Ver la imagen de la url: ', result[0])
-    $('#photoactual').attr('src',result[0].secure_url)
+    $('#photoactual').attr('style', `background-image: url(${result[0].secure_url})`)
     $('#photolink').attr('value', result[0].secure_url)
   });
 })

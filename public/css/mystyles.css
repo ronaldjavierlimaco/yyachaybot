@@ -45,3 +45,35 @@ code {
   padding-top: 10px;
   padding-bottom: 20px;
 }
+
+.img-user {
+  background-position: center;
+  /* background-repeat: no-repeat; */
+  background-size: cover;
+  /* position: relative; */
+  width: 100px;
+  height: 100px;
+}
+
+.img-course {
+  background-position: center;
+  background-size: cover;
+  width: 100px;
+  height: 100px;
+}
+
+.img-course-p {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto;
+  position: relative;
+  width: 250px;
+  height: 250px;
+}
+
+.img-user-h {
+  background-position: center;
+  background-size: cover;
+  width: 60px;
+  height: 60px;
+}
