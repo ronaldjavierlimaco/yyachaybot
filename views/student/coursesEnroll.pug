@@ -16,6 +16,7 @@ block content
             th(scope='col') Ciclo
             th(scope='col') Profesor
             th(scope='col') 
+            th(scope='col') 
         tbody
           each curso, index in cursos
             tr
@@ -29,3 +30,5 @@ block content
               td  #{curso.idCourse.idTeacher.names} #{curso.idCourse.idTeacher.surnames}
               td 
                 a.btn.btn-primary(href=`/alumno/cursos/${curso.idCourse._id}/matriculado`, role='button') Ver más
+              td
+                a.btn.btn-primary(href=`/alumno/cursosmatriculados/chatbot/${curso.idCourse.idChatbot}`, role='button') Chat

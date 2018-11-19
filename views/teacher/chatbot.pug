@@ -36,14 +36,14 @@ block content
           thead.bg-primary
             tr
               th(scope='col') #
-              th(scope='col') Id
+              //th(scope='col') Id
               th(scope='col') Nombre
               th(scope='col')
           tbody
             each intencion, index in intenciones
               tr
                 th(scope='row') #{index + 1}
-                td #{intencion.idI}
+                //td #{intencion.idI}
                 td #{intencion.displayName}
                 td 
                   a.btn.btn-primary(href=`/profesor/chatbots/${chatbot._id}/intencion/${intencion.idI}/editar`, role='button') Editar intención

@@ -12,7 +12,7 @@ block content
       table.table.table-striped.table-hover
         thead.bg-primary
           tr
-            th(scope='col') #
+            //th(scope='col') #
             th(scope='col') Título del Curso
             th(scope='col') E.A.P
             th(scope='col') Ciclo
@@ -20,9 +20,9 @@ block content
             th(scope='col') 
             th(scope='col') 
         tbody
-          each curso, index in cursos
+          each curso in cursos
             tr
-              th(scope='row') #{index + 1}
+              //th(scope='row') #{index + 1}
               td #{curso.title}
               if curso.eap == 1
                 td Ingeniería de Sistemas
@@ -34,4 +34,4 @@ block content
               td 
                 a.btn.btn-primary(href=`/profesor/cursos/${curso._id}`, role='button') Ver más
               td 
-                a.btn.btn-primary(href=`/profesor/chatbots/${curso.idChatbot}/conversar`, role='button') Conversar Chatbot
+                a.btn.btn-primary(href=`/profesor/chatbots/${curso.idChatbot}/conversar`, role='button') Chatbot
